@@ -11,12 +11,6 @@ export const DiscussionCategories: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'createdAt'],
   },
-  access: {
-    read: adminOnlyCollectionAccess,
-    create: adminOnlyCollectionAccess,
-    update: adminOnlyCollectionAccess,
-    delete: () => false,
-  },
   fields: [
     {
       name: 'name',
@@ -83,12 +77,6 @@ export const Discussion: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'author', 'createdAt'],
-  },
-  access: {
-    read: adminOnlyCollectionAccess,
-    create: userOnlyCollectionAccess,
-    update: userSelfCollectionAccess,
-    delete: ForbiddenCollectionAccess,
   },
   fields: [
     {

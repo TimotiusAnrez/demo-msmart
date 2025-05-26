@@ -7,12 +7,6 @@ export const ReportCategories: CollectionConfig = {
   admin: {
     defaultColumns: ['name', 'createdAt'],
   },
-  access: {
-    read: adminOnlyCollectionAccess,
-    create: adminOnlyCollectionAccess,
-    update: adminOnlyCollectionAccess,
-    delete: adminOnlyCollectionAccess,
-  },
   fields: [
     {
       name: 'name',
@@ -39,9 +33,6 @@ export const Reports: CollectionConfig = {
   slug: 'reports',
   admin: {
     defaultColumns: ['media', 'title', 'category', 'createdAt'],
-  },
-  access: {
-    create: userOnlyCollectionAccess,
   },
   fields: [
     {

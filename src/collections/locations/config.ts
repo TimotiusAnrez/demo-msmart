@@ -6,12 +6,6 @@ export const LocationCategories: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
   },
-  access: {
-    read: adminOnlyCollectionAccess,
-    create: adminOnlyCollectionAccess,
-    update: adminOnlyCollectionAccess,
-    delete: adminOnlyCollectionAccess,
-  },
   fields: [
     {
       name: 'name',
@@ -29,12 +23,6 @@ export const LocationCategories: CollectionConfig = {
 
 export const Locations: CollectionConfig = {
   slug: 'locations',
-  access: {
-    read: adminOnlyCollectionAccess,
-    create: adminOnlyCollectionAccess,
-    update: adminOnlyCollectionAccess,
-    delete: adminOnlyCollectionAccess,
-  },
   fields: [
     {
       name: 'MediaGallery',

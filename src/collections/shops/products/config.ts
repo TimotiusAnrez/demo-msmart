@@ -6,12 +6,6 @@ import { CollectionConfig, Field } from 'payload'
 
 export const ShopProductCategory: CollectionConfig = {
   slug: 'shopProductCategory',
-  access: {
-    delete: ForbiddenCollectionAccess,
-    read: adminOnlyCollectionAccess,
-    create: adminOnlyCollectionAccess,
-    update: adminOnlyCollectionAccess,
-  },
   fields: [
     {
       name: 'name',
@@ -84,12 +78,6 @@ export const ShopProducts: CollectionConfig = {
   admin: {
     useAsTitle: 'productName',
     hidden: true,
-  },
-  access: {
-    read: userSelfCollectionAccess,
-    create: userOnlyCollectionAccess,
-    update: userSelfCollectionAccess,
-    delete: userOnlyCollectionAccess,
   },
   fields: [
     {

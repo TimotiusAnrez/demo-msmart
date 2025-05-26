@@ -20,12 +20,6 @@ export const ShopCategories: CollectionConfig = {
       on: 'category',
     },
   ],
-  access: {
-    delete: ForbiddenCollectionAccess,
-    read: adminOnlyCollectionAccess,
-    create: adminOnlyCollectionAccess,
-    update: adminOnlyCollectionAccess,
-  },
 }
 
 export const Shop: CollectionConfig = {
@@ -33,12 +27,6 @@ export const Shop: CollectionConfig = {
   admin: {
     useAsTitle: 'shopName',
     defaultColumns: ['shopName', 'information', 'location', 'contact', 'createdAt'],
-  },
-  access: {
-    read: userSelfCollectionAccess,
-    create: userOnlyCollectionAccess,
-    update: userSelfCollectionAccess,
-    delete: userOnlyCollectionAccess,
   },
   fields: [
     {
