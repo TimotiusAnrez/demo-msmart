@@ -9,6 +9,8 @@ import { toast } from 'sonner'
 import { UserOnboardingFormData, userOnboardingSchema } from '@/lib/schemas/user-schema'
 import { submitOnboardingForm } from '@/app/actions/onboarding'
 import { DateField } from '@/components/form/date-input-field'
+import { useRouter } from 'next/navigation'
+import { NavigationLink } from '@/types/globals.enum'
 
 type FormValues = z.infer<typeof userOnboardingSchema>
 
@@ -45,10 +47,10 @@ export default function UserOnboardingForm({
     defaultValues: defaultData,
   })
 
+  const router = useRouter()
+
   // Form submission handler
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data)
-
     try {
       setIsSubmitting(true)
       setFormStatus(null)
@@ -58,9 +60,11 @@ export default function UserOnboardingForm({
 
       if (result.success) {
         setFormStatus({ message: 'User onboarding completed successfully', isError: false })
-        methods.reset() // Reset form on success
+        toast.success('Onboarding completed successfully')
+        router.push(NavigationLink.PROFILE)
       } else {
         setFormStatus({ message: result.error?.message || 'An error occurred', isError: true })
+        toast.error(result.error?.message || 'An error occurred')
       }
     } catch (error) {
       console.error('Form submission error:', error)
@@ -96,6 +100,7 @@ export default function UserOnboardingForm({
                 tooltip="Enter your first name"
                 required
                 placeholder="John"
+                disabled={isSubmitting || firstName ? true : false}
                 className="w-full"
               />
             </div>
@@ -107,6 +112,7 @@ export default function UserOnboardingForm({
                 tooltip="Enter your last name"
                 required
                 placeholder="Doe"
+                disabled={isSubmitting || lastName ? true : false}
                 className="w-full"
               />
             </div>
@@ -123,6 +129,7 @@ export default function UserOnboardingForm({
                   { value: 'male', label: 'Male' },
                   { value: 'female', label: 'Female' },
                 ]}
+                disabled={isSubmitting}
                 className="w-full"
               />
             </div>
@@ -133,6 +140,7 @@ export default function UserOnboardingForm({
                 className="w-full"
                 field={methods.register('DOB')}
                 error={methods.formState.errors.DOB?.message}
+                disabled={isSubmitting}
               />
             </div>
           </div>
@@ -146,6 +154,7 @@ export default function UserOnboardingForm({
                 required
                 type="email"
                 className="w-full"
+                disabled={isSubmitting || email ? true : false}
                 placeholder="john.doe@example.com"
               />
             </div>
@@ -166,13 +175,14 @@ export default function UserOnboardingForm({
                 name="documentType"
                 label="Document Type"
                 tooltip="We'll use this email to contact you"
-                required
                 className="w-full"
                 placeholder="john.doe@example.com"
                 options={[
-                  { value: 'PASSPORT', label: 'Passport' },
                   { value: 'IDCARD', label: 'ID Card' },
+                  { value: 'PASSPORT', label: 'Passport' },
                 ]}
+                disabled={isSubmitting}
+                required={false}
               />
             </div>
             <div className="container grow">
@@ -183,6 +193,8 @@ export default function UserOnboardingForm({
                 type="text"
                 className="w-full"
                 placeholder="1234567890"
+                required={false}
+                disabled={isSubmitting}
               />
             </div>
           </div>

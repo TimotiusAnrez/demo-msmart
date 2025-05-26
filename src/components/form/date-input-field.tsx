@@ -12,9 +12,17 @@ interface DateFieldProps {
   className?: string
   field: any
   error?: string
+  disabled?: boolean
 }
 
-export function DateField({ label, required = false, className, field, error }: DateFieldProps) {
+export function DateField({
+  label,
+  required = false,
+  className,
+  field,
+  error,
+  disabled,
+}: DateFieldProps) {
   const [hasInteracted, setHasInteracted] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
 
@@ -26,6 +34,7 @@ export function DateField({ label, required = false, className, field, error }: 
     <FormFieldWrapper label={label} name={field.name} required={required} className={className}>
       <div className="relative">
         <Input
+          disabled={disabled}
           type="date"
           {...field}
           onFocus={() => setIsFocused(true)}

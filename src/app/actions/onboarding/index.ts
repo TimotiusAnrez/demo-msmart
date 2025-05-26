@@ -9,11 +9,6 @@ import {
 import { ActionResult, ErrorSource } from '@/types/serverAction.types'
 
 export async function submitOnboardingForm(data: UserOnboardingFormData): Promise<ActionResult> {
-  // Simulate processing delay
-  await new Promise((resolve) => setTimeout(resolve, 2000))
-
-  console.log(data)
-
   // Validate form fields
   const validatedFields = userOnboardingSchema.safeParse({
     clerkID: data.clerkID,
