@@ -7,8 +7,8 @@ import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from './collections/Users'
-import { Media } from './collections/Media'
+import { Users } from '@/collections/users/config'
+import { Media } from '@/collections/media/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,6 +18,13 @@ export default buildConfig({
     user: Users.slug,
     importMap: {
       baseDir: path.resolve(dirname),
+    },
+    routes: {
+      login: '/auth/sign-in',
+      browseByFolder: '/admin',
+    },
+    components: {
+      providers: ['@/components/payload/providers/clerkPayloadProvider'],
     },
   },
   collections: [Users, Media],
