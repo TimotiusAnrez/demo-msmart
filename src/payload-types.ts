@@ -69,14 +69,60 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    discussion: Discussion;
+    discussionCategories: DiscussionCategory;
+    discussionComment: DiscussionComment;
+    locations: Location;
+    locationCategories: LocationCategory;
+    reports: Report;
+    reportCategories: ReportCategory;
+    institutions: Institution;
+    shopCategories: ShopCategory;
+    shops: Shop;
+    shopProductCategory: ShopProductCategory;
+    shopProducts: ShopProduct;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsJoins: {};
+  collectionsJoins: {
+    discussion: {
+      commentList: 'discussionComment';
+    };
+    discussionCategories: {
+      discussionList: 'discussion';
+    };
+    locationCategories: {
+      locationList: 'locations';
+    };
+    reportCategories: {
+      ReportList: 'reports';
+    };
+    shopCategories: {
+      shopList: 'shops';
+    };
+    shops: {
+      productList: 'shopProducts';
+    };
+    shopProductCategory: {
+      productList: 'shopProducts';
+    };
+  };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    discussion: DiscussionSelect<false> | DiscussionSelect<true>;
+    discussionCategories: DiscussionCategoriesSelect<false> | DiscussionCategoriesSelect<true>;
+    discussionComment: DiscussionCommentSelect<false> | DiscussionCommentSelect<true>;
+    locations: LocationsSelect<false> | LocationsSelect<true>;
+    locationCategories: LocationCategoriesSelect<false> | LocationCategoriesSelect<true>;
+    reports: ReportsSelect<false> | ReportsSelect<true>;
+    reportCategories: ReportCategoriesSelect<false> | ReportCategoriesSelect<true>;
+    institutions: InstitutionsSelect<false> | InstitutionsSelect<true>;
+    shopCategories: ShopCategoriesSelect<false> | ShopCategoriesSelect<true>;
+    shops: ShopsSelect<false> | ShopsSelect<true>;
+    shopProductCategory: ShopProductCategorySelect<false> | ShopProductCategorySelect<true>;
+    shopProducts: ShopProductsSelect<false> | ShopProductsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -201,6 +247,282 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discussion".
+ */
+export interface Discussion {
+  id: number;
+  title: string;
+  author: number | User;
+  category: (number | DiscussionCategory)[];
+  status: 'OPEN' | 'REPORTED' | 'ARCHIVED';
+  content: string;
+  media?: (number | null) | Media;
+  reportList?:
+    | {
+        reportType: 'SPAM' | 'FAKE_INFORMATION' | 'OTHER';
+        reportContent: string;
+        reporter: number | User;
+        confirmed?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  commentList?: {
+    docs?: (number | DiscussionComment)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discussionCategories".
+ */
+export interface DiscussionCategory {
+  id: number;
+  name: string;
+  discussionList?: {
+    docs?: (number | Discussion)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  isArchived?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discussionComment".
+ */
+export interface DiscussionComment {
+  id: number;
+  commenter: number | User;
+  content: string;
+  discussion: number | Discussion;
+  isReported?: boolean | null;
+  archived?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations".
+ */
+export interface Location {
+  id: number;
+  MediaGallery?:
+    | {
+        media?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  name: string;
+  category: (number | LocationCategory)[];
+  description?: string | null;
+  location: {
+    address: string;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    geo: [number, number];
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locationCategories".
+ */
+export interface LocationCategory {
+  id: number;
+  name: string;
+  locationList?: {
+    docs?: (number | Location)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reports".
+ */
+export interface Report {
+  id: number;
+  title: string;
+  author: number | User;
+  category: (number | ReportCategory)[];
+  status: 'OPEN' | 'ON_REVIEW' | 'CLOSED';
+  content: string;
+  media: number | Media;
+  adminResponse?:
+    | {
+        comment: string;
+        media: number | Media;
+        admin: number | User;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reportCategories".
+ */
+export interface ReportCategory {
+  id: number;
+  name: string;
+  ReportList?: {
+    docs?: (number | Report)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  isArchived?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "institutions".
+ */
+export interface Institution {
+  id: number;
+  logo?: (number | null) | Media;
+  name: string;
+  type: 'PUBLIC' | 'PRIVATE';
+  sector: 'HEALTH' | 'EDUCATION' | 'GOVERNMENT' | 'PUBLIC_SERVICE' | 'INFRASTRUCTURE';
+  isArchived?: boolean | null;
+  description: string;
+  location: {
+    address: string;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    geo: [number, number];
+  };
+  contactList?:
+    | {
+        type: 'EMAIL' | 'PHONE' | 'WHATSAPP' | 'WEBSITE';
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shopCategories".
+ */
+export interface ShopCategory {
+  id: number;
+  name: string;
+  shopList?: {
+    docs?: (number | Shop)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shops".
+ */
+export interface Shop {
+  id: number;
+  shopName?: string | null;
+  category: number | ShopCategory;
+  mediaGallery?:
+    | {
+        media?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  information: ShopInformation;
+  location: {
+    address: string;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    geo: [number, number];
+  };
+  contact?: {
+    email?: string | null;
+    phone?: string | null;
+    whatsapp?: string | null;
+    website?: string | null;
+  };
+  productList?: {
+    docs?: (number | ShopProduct)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ShopInformation".
+ */
+export interface ShopInformation {
+  legalName: string;
+  tradingName: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shopProducts".
+ */
+export interface ShopProduct {
+  id: number;
+  productName?: string | null;
+  owner: number | Shop;
+  information: {
+    mediaGallery?:
+      | {
+          media?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+    name: string;
+    description: string;
+  };
+  category: (number | ShopProductCategory)[];
+  variantList?:
+    | {
+        variant: {
+          name: string;
+          thumbnail?: (number | null) | Media;
+          price: number;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shopProductCategory".
+ */
+export interface ShopProductCategory {
+  id: number;
+  name: string;
+  productList?: {
+    docs?: (number | ShopProduct)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -213,6 +535,54 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'discussion';
+        value: number | Discussion;
+      } | null)
+    | ({
+        relationTo: 'discussionCategories';
+        value: number | DiscussionCategory;
+      } | null)
+    | ({
+        relationTo: 'discussionComment';
+        value: number | DiscussionComment;
+      } | null)
+    | ({
+        relationTo: 'locations';
+        value: number | Location;
+      } | null)
+    | ({
+        relationTo: 'locationCategories';
+        value: number | LocationCategory;
+      } | null)
+    | ({
+        relationTo: 'reports';
+        value: number | Report;
+      } | null)
+    | ({
+        relationTo: 'reportCategories';
+        value: number | ReportCategory;
+      } | null)
+    | ({
+        relationTo: 'institutions';
+        value: number | Institution;
+      } | null)
+    | ({
+        relationTo: 'shopCategories';
+        value: number | ShopCategory;
+      } | null)
+    | ({
+        relationTo: 'shops';
+        value: number | Shop;
+      } | null)
+    | ({
+        relationTo: 'shopProductCategory';
+        value: number | ShopProductCategory;
+      } | null)
+    | ({
+        relationTo: 'shopProducts';
+        value: number | ShopProduct;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -357,6 +727,242 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discussion_select".
+ */
+export interface DiscussionSelect<T extends boolean = true> {
+  title?: T;
+  author?: T;
+  category?: T;
+  status?: T;
+  content?: T;
+  media?: T;
+  reportList?:
+    | T
+    | {
+        reportType?: T;
+        reportContent?: T;
+        reporter?: T;
+        confirmed?: T;
+        id?: T;
+      };
+  commentList?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discussionCategories_select".
+ */
+export interface DiscussionCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  discussionList?: T;
+  isArchived?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discussionComment_select".
+ */
+export interface DiscussionCommentSelect<T extends boolean = true> {
+  commenter?: T;
+  content?: T;
+  discussion?: T;
+  isReported?: T;
+  archived?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locations_select".
+ */
+export interface LocationsSelect<T extends boolean = true> {
+  MediaGallery?:
+    | T
+    | {
+        media?: T;
+        id?: T;
+      };
+  name?: T;
+  category?: T;
+  description?: T;
+  location?:
+    | T
+    | {
+        address?: T;
+        geo?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "locationCategories_select".
+ */
+export interface LocationCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  locationList?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reports_select".
+ */
+export interface ReportsSelect<T extends boolean = true> {
+  title?: T;
+  author?: T;
+  category?: T;
+  status?: T;
+  content?: T;
+  media?: T;
+  adminResponse?:
+    | T
+    | {
+        comment?: T;
+        media?: T;
+        admin?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reportCategories_select".
+ */
+export interface ReportCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  ReportList?: T;
+  isArchived?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "institutions_select".
+ */
+export interface InstitutionsSelect<T extends boolean = true> {
+  logo?: T;
+  name?: T;
+  type?: T;
+  sector?: T;
+  isArchived?: T;
+  description?: T;
+  location?:
+    | T
+    | {
+        address?: T;
+        geo?: T;
+      };
+  contactList?:
+    | T
+    | {
+        type?: T;
+        value?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shopCategories_select".
+ */
+export interface ShopCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  shopList?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shops_select".
+ */
+export interface ShopsSelect<T extends boolean = true> {
+  shopName?: T;
+  category?: T;
+  mediaGallery?:
+    | T
+    | {
+        media?: T;
+        id?: T;
+      };
+  information?: T | ShopInformationSelect<T>;
+  location?:
+    | T
+    | {
+        address?: T;
+        geo?: T;
+      };
+  contact?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        whatsapp?: T;
+        website?: T;
+      };
+  productList?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ShopInformation_select".
+ */
+export interface ShopInformationSelect<T extends boolean = true> {
+  legalName?: T;
+  tradingName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shopProductCategory_select".
+ */
+export interface ShopProductCategorySelect<T extends boolean = true> {
+  name?: T;
+  productList?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "shopProducts_select".
+ */
+export interface ShopProductsSelect<T extends boolean = true> {
+  productName?: T;
+  owner?: T;
+  information?:
+    | T
+    | {
+        mediaGallery?:
+          | T
+          | {
+              media?: T;
+              id?: T;
+            };
+        name?: T;
+        description?: T;
+      };
+  category?: T;
+  variantList?:
+    | T
+    | {
+        variant?:
+          | T
+          | {
+              name?: T;
+              thumbnail?: T;
+              price?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

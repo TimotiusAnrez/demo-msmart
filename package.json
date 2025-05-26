@@ -50,6 +50,7 @@
     "cross-env": "^7.0.3",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.14.0",
     "graphql": "^16.8.1",
     "lucide-react": "^0.511.0",
     "next": "15.3.0",

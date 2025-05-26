@@ -11,6 +11,8 @@ import { submitOnboardingForm } from '@/app/actions/onboarding'
 import { DateField } from '@/components/form/date-input-field'
 import { useRouter } from 'next/navigation'
 import { NavigationLink } from '@/types/globals.enum'
+import { useFormStatus } from 'react-dom'
+import Loading from '@/app/(frontend)/loading'
 
 type FormValues = z.infer<typeof userOnboardingSchema>
 
@@ -29,6 +31,7 @@ export default function UserOnboardingForm({
 }: UserOnboardingProps) {
   const [formStatus, setFormStatus] = useState<{ message: string; isError: boolean } | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { pending } = useFormStatus()
 
   const defaultData: UserOnboardingFormData = {
     clerkID,
@@ -38,7 +41,7 @@ export default function UserOnboardingForm({
     gender: 'male',
     DOB: '',
     phone: '',
-    documentType: 'PASSPORT',
+    documentType: 'IDCARD',
     documentNumber: '',
   }
 
@@ -76,6 +79,8 @@ export default function UserOnboardingForm({
       setIsSubmitting(false)
     }
   }
+
+  if (pending) return <Loading />
 
   return (
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">

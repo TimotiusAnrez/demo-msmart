@@ -9,6 +9,16 @@ import sharp from 'sharp'
 
 import { Users } from '@/collections/users/config'
 import { Media } from '@/collections/media/config'
+import {
+  Discussion,
+  DiscussionCategories,
+  DiscussionComment,
+} from './collections/discussion/config'
+import { LocationCategories, Locations } from './collections/locations/config'
+import { ReportCategories, Reports } from './collections/report/config'
+import { Institutions } from './collections/institutions/config'
+import { ShopCategories, Shop } from './collections/shops/config'
+import { ShopProductCategory, ShopProducts } from './collections/shops/products/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -27,7 +37,22 @@ export default buildConfig({
       providers: ['@/components/payload/providers/clerkPayloadProvider'],
     },
   },
-  collections: [Users, Media],
+  collections: [
+    Users,
+    Media,
+    Discussion,
+    DiscussionCategories,
+    DiscussionComment,
+    Locations,
+    LocationCategories,
+    Reports,
+    ReportCategories,
+    Institutions,
+    ShopCategories,
+    Shop,
+    ShopProductCategory,
+    ShopProducts,
+  ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

@@ -38,7 +38,15 @@ export function ProfileView({ user }: ProfileViewProps) {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Personal Information</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            Personal Information{' '}
+            <div className="flex items-center gap-1">
+              {getStatusIcon(user.verification.status)}
+              <Badge className={getStatusColor(user.verification.status)}>
+                {user.verification.status.replace('_', ' ')}
+              </Badge>
+            </div>
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-2 gap-4">

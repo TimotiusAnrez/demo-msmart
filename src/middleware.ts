@@ -1,6 +1,7 @@
 import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { ClerkNavigationLink, NavigationLink } from './types/globals.enum'
 import { NextRequest, NextResponse } from 'next/server'
+import { checkRolePublic } from './helper/checkRoleHelper'
 
 /**
  * Level of clerk protection
@@ -40,7 +41,12 @@ const isProtectedRoute = createRouteMatcher([
   NavigationLink.ONBOARDING,
 ])
 
-const isNeedOnboardingRoute = createRouteMatcher([ClerkNavigationLink.ADMIN])
+const isNeedOnboardingRoute = createRouteMatcher([
+  ClerkNavigationLink.ADMIN,
+  ClerkNavigationLink.PROFILE,
+])
+
+const isAdminRoute = createRouteMatcher([ClerkNavigationLink.ADMIN])
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
   const { userId, sessionClaims, redirectToSignIn } = await auth()
@@ -57,6 +63,35 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
     if (isNeedOnboardingRoute(req) && !sessionClaims.metadata.onboardingComplete) {
       const onboardingUrl = NavigationLink.ONBOARDING
       return NextResponse.redirect(new URL(onboardingUrl, req.url))
+    }
+
+    //authed, onboarding complete, but going to admin specific route hence check the role
+    if (isAdminRoute(req) && userId && sessionClaims.metadata.onboardingComplete) {
+      const client = await clerkClient()
+      const response = await client.users.getUser(userId)
+
+      if (!response) return redirectToSignIn({ returnBackUrl: NavigationLink.PROFILE })
+
+      //retrive the role and widen the type
+      const role = response.privateMetadata.role as (
+        | 'USER'
+        | 'USER_BUSINESS'
+        | 'ADMIN_MS'
+        | 'ADMIN_MSAGRI'
+        | 'SUPER_ADMIN'
+      )[]
+
+      //check if role exist
+      if (!role || role.length < 1)
+        return redirectToSignIn({ returnBackUrl: NavigationLink.PROFILE })
+
+      //if true let them pass
+      if (checkRolePublic(['USER_BUSINESS', 'ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], role)) {
+        return NextResponse.next()
+      }
+
+      //if false redirect to profile
+      return NextResponse.redirect(new URL(NavigationLink.PROFILE, req.url))
     }
 
     //authed but not going to need onboarding route

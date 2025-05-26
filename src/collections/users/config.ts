@@ -209,7 +209,7 @@ export const Users: CollectionConfig = {
   },
   access: {
     read: userSelfCollectionAccess,
-    create: () => true,
+    create: adminOnlyFieldAccess,
     delete: userOnlyCollectionAccess,
   },
   admin: {

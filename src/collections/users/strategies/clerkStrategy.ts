@@ -32,12 +32,15 @@ export async function getUser({ payload }: { payload: Payload }): Promise<User |
 
     if (!userQuery) return null
 
-    if (!checkRole(allowedRole, userQuery)) return null
+    //if role checked
+    if (checkRole(allowedRole, userQuery))
+      return {
+        collection: 'users',
+        ...userQuery,
+      }
 
-    return {
-      collection: 'users',
-      ...userQuery,
-    }
+    //fail check role
+    return null
   } catch (error) {
     console.log(error)
 
