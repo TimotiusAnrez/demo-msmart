@@ -60,7 +60,7 @@ export default function UserOnboardingForm({
 
       if (result.success) {
         setFormStatus({ message: 'User onboarding completed successfully', isError: false })
-        toast.success('Onboarding completed successfully')
+        toast.success(`Onboarding completed successfully`)
         router.push(NavigationLink.PROFILE)
       } else {
         setFormStatus({ message: result.error?.message || 'An error occurred', isError: true })
@@ -165,6 +165,7 @@ export default function UserOnboardingForm({
                 tooltip="Optional phone number for contact"
                 type="tel"
                 className="w-full"
+                disabled={isSubmitting}
                 placeholder="(123) 456-7890"
               />
             </div>
