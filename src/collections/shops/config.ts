@@ -4,9 +4,16 @@ import { ForbiddenCollectionAccess } from '@/collections/access/forbidden'
 import { userOnlyCollectionAccess } from '../access/userOnly'
 import { userSelfCollectionAccess } from '../access/userSelf'
 import { adminOnlyCollectionAccess } from '../access/adminOnly'
+import { checkRolePublic } from '@/helper/checkRoleHelper'
 
 export const ShopCategories: CollectionConfig = {
   slug: 'shopCategories',
+  admin: {
+    useAsTitle: 'name',
+    hidden: (args) => {
+      return !checkRolePublic(['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
+    },
+  },
   fields: [
     {
       name: 'name',

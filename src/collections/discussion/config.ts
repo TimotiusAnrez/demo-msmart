@@ -4,12 +4,16 @@ import { adminOnlyCollectionAccess, adminOnlyFieldAccess } from '@/collections/a
 import { AnyoneCollectionAccess } from '../access/anyone'
 import { ForbiddenCollectionAccess } from '../access/forbidden'
 import { userSelfCollectionAccess } from '../access/userSelf'
+import { checkRolePublic } from '@/helper/checkRoleHelper'
 
 export const DiscussionCategories: CollectionConfig = {
   slug: 'discussionCategories',
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'createdAt'],
+    hidden: (args) => {
+      return !checkRolePublic(['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
+    },
   },
   fields: [
     {
@@ -87,6 +91,13 @@ export const Discussion: CollectionConfig = {
         create: userOnlyFieldAccess,
         update: userOnlyFieldAccess,
       },
+      hooks: {
+        beforeChange: [
+          ({ siblingData }) => {
+            return `${siblingData.category[0].name ? siblingData.category[0].name : ''} ${siblingData.title}`
+          },
+        ],
+      },
     },
     {
       name: 'author',
@@ -157,6 +168,7 @@ export const Discussion: CollectionConfig = {
       type: 'array',
       maxRows: 5,
       access: {
+        read: adminOnlyFieldAccess,
         create: userOnlyFieldAccess,
         update: () => false,
       },

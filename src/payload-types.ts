@@ -76,7 +76,7 @@ export interface Config {
     locationCategories: LocationCategory;
     reports: Report;
     reportCategories: ReportCategory;
-    institutions: Institution;
+    facility: Facility;
     shopCategories: ShopCategory;
     shops: Shop;
     shopProductCategory: ShopProductCategory;
@@ -84,6 +84,12 @@ export interface Config {
     productVariant: ProductVariant;
     cart: Cart;
     transaction: Transaction;
+    newsCategory: NewsCategory;
+    news: News;
+    farmers: Farmer;
+    farmerProduce: FarmerProduce;
+    produceCategory: ProduceCategory;
+    pages: Page;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -113,6 +119,9 @@ export interface Config {
     shopProducts: {
       variantList: 'productVariant';
     };
+    farmers: {
+      produceList: 'farmerProduce';
+    };
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
@@ -124,7 +133,7 @@ export interface Config {
     locationCategories: LocationCategoriesSelect<false> | LocationCategoriesSelect<true>;
     reports: ReportsSelect<false> | ReportsSelect<true>;
     reportCategories: ReportCategoriesSelect<false> | ReportCategoriesSelect<true>;
-    institutions: InstitutionsSelect<false> | InstitutionsSelect<true>;
+    facility: FacilitySelect<false> | FacilitySelect<true>;
     shopCategories: ShopCategoriesSelect<false> | ShopCategoriesSelect<true>;
     shops: ShopsSelect<false> | ShopsSelect<true>;
     shopProductCategory: ShopProductCategorySelect<false> | ShopProductCategorySelect<true>;
@@ -132,6 +141,12 @@ export interface Config {
     productVariant: ProductVariantSelect<false> | ProductVariantSelect<true>;
     cart: CartSelect<false> | CartSelect<true>;
     transaction: TransactionSelect<false> | TransactionSelect<true>;
+    newsCategory: NewsCategorySelect<false> | NewsCategorySelect<true>;
+    news: NewsSelect<false> | NewsSelect<true>;
+    farmers: FarmersSelect<false> | FarmersSelect<true>;
+    farmerProduce: FarmerProduceSelect<false> | FarmerProduceSelect<true>;
+    produceCategory: ProduceCategorySelect<false> | ProduceCategorySelect<true>;
+    pages: PagesSelect<false> | PagesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -139,8 +154,12 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    header: Header;
+  };
+  globalsSelect: {
+    header: HeaderSelect<false> | HeaderSelect<true>;
+  };
   locale: null;
   user: User & {
     collection: 'users';
@@ -395,9 +414,9 @@ export interface ReportCategory {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "institutions".
+ * via the `definition` "facility".
  */
-export interface Institution {
+export interface Facility {
   id: number;
   logo?: (number | null) | Media;
   name: string;
@@ -503,7 +522,7 @@ export interface ShopProduct {
     description: string;
   };
   category: (number | ShopProductCategory)[];
-  variantList: {
+  variantList?: {
     docs?: (number | ProductVariant)[];
     hasNextPage?: boolean;
     totalDocs?: number;
@@ -532,7 +551,7 @@ export interface ShopProductCategory {
  */
 export interface ProductVariant {
   id: number;
-  product: number | ShopProduct;
+  product?: (number | null) | ShopProduct;
   name: string;
   thumbnail?: (number | null) | Media;
   price: number;
@@ -595,6 +614,105 @@ export interface TransactionItemDetail {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsCategory".
+ */
+export interface NewsCategory {
+  id: number;
+  name: string;
+  isArchived?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news".
+ */
+export interface News {
+  id: number;
+  newsTitle?: string | null;
+  meta: {
+    title: string;
+    category: (number | NewsCategory)[];
+    description: string;
+    banner: number | Media;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "farmers".
+ */
+export interface Farmer {
+  id: number;
+  fullName?: string | null;
+  personal: {
+    firstName: string;
+    lastName: string;
+  };
+  contact: {
+    phone: string;
+    whatsapp: string;
+  };
+  location: {
+    address: string;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    geo: [number, number];
+  };
+  produceList?: {
+    docs?: (number | FarmerProduce)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "farmerProduce".
+ */
+export interface FarmerProduce {
+  id: number;
+  farmer: number | Farmer;
+  name: string;
+  category: number | ProduceCategory;
+  stock: {
+    quantity: number;
+    unit: 'KG' | 'TON';
+  };
+  price: {
+    nominal: number;
+    unit: 'KG' | 'TON';
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "produceCategory".
+ */
+export interface ProduceCategory {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages".
+ */
+export interface Page {
+  id: number;
+  title: string;
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -637,8 +755,8 @@ export interface PayloadLockedDocument {
         value: number | ReportCategory;
       } | null)
     | ({
-        relationTo: 'institutions';
-        value: number | Institution;
+        relationTo: 'facility';
+        value: number | Facility;
       } | null)
     | ({
         relationTo: 'shopCategories';
@@ -667,6 +785,30 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'transaction';
         value: number | Transaction;
+      } | null)
+    | ({
+        relationTo: 'newsCategory';
+        value: number | NewsCategory;
+      } | null)
+    | ({
+        relationTo: 'news';
+        value: number | News;
+      } | null)
+    | ({
+        relationTo: 'farmers';
+        value: number | Farmer;
+      } | null)
+    | ({
+        relationTo: 'farmerProduce';
+        value: number | FarmerProduce;
+      } | null)
+    | ({
+        relationTo: 'produceCategory';
+        value: number | ProduceCategory;
+      } | null)
+    | ({
+        relationTo: 'pages';
+        value: number | Page;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -928,9 +1070,9 @@ export interface ReportCategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "institutions_select".
+ * via the `definition` "facility_select".
  */
-export interface InstitutionsSelect<T extends boolean = true> {
+export interface FacilitySelect<T extends boolean = true> {
   logo?: T;
   name?: T;
   type?: T;
@@ -1104,6 +1246,103 @@ export interface TransactionItemDetailSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsCategory_select".
+ */
+export interface NewsCategorySelect<T extends boolean = true> {
+  name?: T;
+  isArchived?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "news_select".
+ */
+export interface NewsSelect<T extends boolean = true> {
+  newsTitle?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        category?: T;
+        description?: T;
+        banner?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "farmers_select".
+ */
+export interface FarmersSelect<T extends boolean = true> {
+  fullName?: T;
+  personal?:
+    | T
+    | {
+        firstName?: T;
+        lastName?: T;
+      };
+  contact?:
+    | T
+    | {
+        phone?: T;
+        whatsapp?: T;
+      };
+  location?:
+    | T
+    | {
+        address?: T;
+        geo?: T;
+      };
+  produceList?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "farmerProduce_select".
+ */
+export interface FarmerProduceSelect<T extends boolean = true> {
+  farmer?: T;
+  name?: T;
+  category?: T;
+  stock?:
+    | T
+    | {
+        quantity?: T;
+        unit?: T;
+      };
+  price?:
+    | T
+    | {
+        nominal?: T;
+        unit?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "produceCategory_select".
+ */
+export interface ProduceCategorySelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pages_select".
+ */
+export interface PagesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents_select".
  */
 export interface PayloadLockedDocumentsSelect<T extends boolean = true> {
@@ -1133,6 +1372,68 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header".
+ */
+export interface Header {
+  id: number;
+  logo?: (number | null) | Media;
+  menu?:
+    | {
+        label: string;
+        page: number | Page;
+        id?: string | null;
+      }[]
+    | null;
+  service?:
+    | {
+        label: string;
+        page: number | Page;
+        id?: string | null;
+      }[]
+    | null;
+  agriculture?:
+    | {
+        label: string;
+        page: number | Page;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "header_select".
+ */
+export interface HeaderSelect<T extends boolean = true> {
+  logo?: T;
+  menu?:
+    | T
+    | {
+        label?: T;
+        page?: T;
+        id?: T;
+      };
+  service?:
+    | T
+    | {
+        label?: T;
+        page?: T;
+        id?: T;
+      };
+  agriculture?:
+    | T
+    | {
+        label?: T;
+        page?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

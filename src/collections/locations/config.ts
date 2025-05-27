@@ -1,10 +1,14 @@
 import { CollectionConfig } from 'payload'
 import { adminOnlyCollectionAccess } from '../access/adminOnly'
+import { checkRolePublic } from '@/helper/checkRoleHelper'
 
 export const LocationCategories: CollectionConfig = {
   slug: 'locationCategories',
   admin: {
     useAsTitle: 'name',
+    hidden: (args) => {
+      return !checkRolePublic(['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
+    },
   },
   fields: [
     {
@@ -23,6 +27,11 @@ export const LocationCategories: CollectionConfig = {
 
 export const Locations: CollectionConfig = {
   slug: 'locations',
+  admin: {
+    hidden: (args) => {
+      return !checkRolePublic(['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
+    },
+  },
   fields: [
     {
       name: 'MediaGallery',

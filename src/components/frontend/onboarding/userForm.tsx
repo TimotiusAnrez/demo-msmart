@@ -66,6 +66,7 @@ export default function UserOnboardingForm({
         toast.success(`Onboarding completed successfully`)
 
         setFormStatus({ message: 'User onboarding completed successfully', isError: false })
+        router.push(NavigationLink.PROFILE)
         redirect(NavigationLink.PROFILE)
       } else {
         setFormStatus({ message: result.error?.message || 'An error occurred', isError: true })
@@ -81,12 +82,6 @@ export default function UserOnboardingForm({
       setIsSubmitting(false)
     }
   }
-
-  useEffect(() => {
-    if (formStatus?.message) {
-      redirect(NavigationLink.PROFILE)
-    }
-  }, [formStatus])
 
   if (pending || isSubmitting) return <TropicalLoading />
 

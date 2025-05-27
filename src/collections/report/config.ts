@@ -1,11 +1,16 @@
 import { Access, CollectionConfig, FieldAccess } from 'payload'
 import { userOnlyCollectionAccess, userOnlyFieldAccess } from '@/collections/access/userOnly'
 import { adminOnlyCollectionAccess, adminOnlyFieldAccess } from '@/collections/access/adminOnly'
+import { checkRolePublic } from '@/helper/checkRoleHelper'
 
 export const ReportCategories: CollectionConfig = {
   slug: 'reportCategories',
   admin: {
+    useAsTitle: 'name',
     defaultColumns: ['name', 'createdAt'],
+    hidden: (args) => {
+      return !checkRolePublic(['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
+    },
   },
   fields: [
     {

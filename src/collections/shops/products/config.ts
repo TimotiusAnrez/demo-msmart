@@ -57,7 +57,6 @@ export const ProductVariant: CollectionConfig = {
       name: 'product',
       type: 'relationship',
       relationTo: 'shopProducts',
-      required: true,
       hasMany: false,
     },
     {
@@ -143,7 +142,6 @@ export const ShopProducts: CollectionConfig = {
               type: 'join',
               collection: 'productVariant',
               on: 'product',
-              required: true,
             },
           ],
         },

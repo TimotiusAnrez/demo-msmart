@@ -8,6 +8,7 @@ import { ProfileView } from '@/components/frontend/profile/profile-view'
 import { ProfileEditForm } from '@/components/frontend/profile/profile-edit-form'
 import { ProfileActions } from '@/components/frontend/profile/profile-actions'
 import type { User } from '@/payload-types'
+import { checkRolePublic } from '@/helper/checkRoleHelper'
 
 interface ProfilePageClientProps {
   initialUser: User
@@ -18,17 +19,32 @@ function AdminPanelNavButton({
 }: {
   role: ('ADMIN_MS' | 'ADMIN_MSAGRI' | 'SUPER_ADMIN' | 'USER_BUSINESS' | 'USER')[]
 }) {
-  const adminAvailRole = ['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN']
-  const userBusinessRole = ['USER_BUSINESS']
+  const adminAvailRole: ('ADMIN_MS' | 'ADMIN_MSAGRI' | 'SUPER_ADMIN' | 'USER_BUSINESS' | 'USER')[] =
+    ['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN']
+  const userBusinessRole: (
+    | 'ADMIN_MS'
+    | 'ADMIN_MSAGRI'
+    | 'SUPER_ADMIN'
+    | 'USER_BUSINESS'
+    | 'USER'
+  )[] = ['USER_BUSINESS']
 
   const router = useRouter()
 
-  if (adminAvailRole.some((role) => adminAvailRole.includes(role))) {
-    return <Button onClick={() => router.push('/admin')}>Admin Panel</Button>
+  if (checkRolePublic(adminAvailRole, role)) {
+    return (
+      <Button onClick={() => router.push('/admin')} className="hover:cursor-pointer">
+        Admin Panel
+      </Button>
+    )
   }
 
-  if (userBusinessRole.some((role) => userBusinessRole.includes(role))) {
-    return <Button onClick={() => router.push('/business')}>Business Panel</Button>
+  if (checkRolePublic(userBusinessRole, role)) {
+    return (
+      <Button onClick={() => router.push('/admin')} className="hover:cursor-pointer">
+        Business Panel
+      </Button>
+    )
   }
 
   return null

@@ -1,8 +1,8 @@
 import { CollectionConfig } from 'payload'
 import { adminOnlyCollectionAccess } from '../access/adminOnly'
 
-export const Institutions: CollectionConfig = {
-  slug: 'institutions',
+export const Facility: CollectionConfig = {
+  slug: 'facility',
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'createdAt'],
