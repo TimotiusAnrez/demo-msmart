@@ -1,6 +1,8 @@
 import { verifyWebhook } from '@clerk/nextjs/webhooks'
 import { NextRequest } from 'next/server'
 import { clerkClient } from '@clerk/nextjs/server'
+import { getPayload } from 'payload'
+import config from '@/payload.config'
 
 export async function POST(req: NextRequest) {
   const evt = await verifyWebhook(req)
@@ -35,6 +37,26 @@ export async function POST(req: NextRequest) {
     }
 
     if (eventType === 'user.deleted') {
+      const payload = await getPayload({ config })
+
+      const user = await payload.find({
+        collection: 'users',
+        where: {
+          clerkID: {
+            equals: id,
+          },
+        },
+      })
+
+      if (!user) {
+        return new Response('already deleted from payload', { status: 200 })
+      }
+
+      await payload.delete({
+        collection: 'users',
+        id: user.docs[0].id,
+      })
+
       return new Response('User Successfully Deleted', { status: 200 })
     }
 

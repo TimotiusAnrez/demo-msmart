@@ -50,10 +50,16 @@ export const ProductInformation: Field = {
   ],
 }
 
-export const ProductVariant: Field = {
-  type: 'group',
-  name: 'variant',
+export const ProductVariant: CollectionConfig = {
+  slug: 'productVariant',
   fields: [
+    {
+      name: 'product',
+      type: 'relationship',
+      relationTo: 'shopProducts',
+      required: true,
+      hasMany: false,
+    },
     {
       name: 'name',
       type: 'text',
@@ -70,6 +76,11 @@ export const ProductVariant: Field = {
       type: 'number',
       required: true,
     },
+    {
+      name: 'stock',
+      type: 'number',
+      required: true,
+    },
   ],
 }
 
@@ -81,30 +92,30 @@ export const ShopProducts: CollectionConfig = {
   },
   fields: [
     {
+      name: 'productName',
+      type: 'text',
+      hooks: {
+        beforeChange: [
+          ({ siblingData }) => {
+            delete siblingData.productName
+          },
+        ],
+        afterRead: [
+          ({ data }) => {
+            return `${data?.information?.name}`
+          },
+        ],
+      },
+      admin: {
+        hidden: true,
+      },
+    },
+    {
       type: 'tabs',
       tabs: [
         {
           label: 'Product Information',
           fields: [
-            {
-              name: 'productName',
-              type: 'text',
-              hooks: {
-                beforeChange: [
-                  ({ siblingData }) => {
-                    delete siblingData.productName
-                  },
-                ],
-                afterRead: [
-                  ({ data }) => {
-                    return `${data?.information?.name}`
-                  },
-                ],
-              },
-              admin: {
-                hidden: true,
-              },
-            },
             {
               name: 'owner',
               type: 'relationship',
@@ -129,8 +140,10 @@ export const ShopProducts: CollectionConfig = {
           fields: [
             {
               name: 'variantList',
-              type: 'array',
-              fields: [ProductVariant],
+              type: 'join',
+              collection: 'productVariant',
+              on: 'product',
+              required: true,
             },
           ],
         },

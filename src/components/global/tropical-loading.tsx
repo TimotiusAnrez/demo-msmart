@@ -17,7 +17,7 @@ const loadingTexts = [
   'Loading fresh coconuts...',
   'Setting up your shopping cart...',
   'Organizing your wardrobe...',
-  'Getting the games ready...',
+  'Getting adventures ready...',
   'Brewing fresh beverages...',
   'Almost there...',
   'Just a moment more...',
@@ -54,7 +54,7 @@ export default function TropicalLoading() {
           clearInterval(progressTimer)
           return 100
         }
-        return prev + 0.5
+        return prev + 1
       })
     }, 100)
 
@@ -65,17 +65,34 @@ export default function TropicalLoading() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-      <div className="text-center max-w-md w-full">
+      <div className="text-center max-w-md w-full space-y-2">
         {/* Title */}
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-3xl md:text-4xl font-bold text-gray-800 mb-12"
+          className="text-3xl md:text-4xl font-bold text-gray-800 p-2"
           style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
         >
-          Paradise Store
+          MSmart
         </motion.h1>
+
+        {/* Animated Text */}
+        <div className="p-2 overflow-hidden">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={currentTextIndex}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.4, ease: 'easeInOut' }}
+              className="text-lg text-gray-600"
+              style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
+            >
+              {loadingTexts[currentTextIndex]}
+            </motion.p>
+          </AnimatePresence>
+        </div>
 
         {/* Central Icon Animation */}
         <div className="relative mb-8">
@@ -99,73 +116,63 @@ export default function TropicalLoading() {
           </div>
 
           {/* Loader beneath icon */}
-          <div className="w-48 mx-auto">
-            <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-              <motion.div
-                className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${progress}%` }}
-                transition={{ duration: 0.3, ease: 'easeOut' }}
-              />
+          {progress < 100 && (
+            <div className="w-48 mx-auto">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.4, ease: 'easeInOut' }}
+                >
+                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                    <motion.div
+                      className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${progress}%` }}
+                      transition={{ duration: 0.3, ease: 'easeOut' }}
+                    />
+                  </div>
+                  <div className="flex justify-between text-sm text-gray-500 mt-2">
+                    <span>Loading</span>
+                    <span>{Math.round(progress)}%</span>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
-            <div className="flex justify-between text-sm text-gray-500 mt-2">
-              <span>Loading</span>
-              <span>{Math.round(progress)}%</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Animated Text */}
-        <div className="h-8 overflow-hidden mb-8">
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={currentTextIndex}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.4, ease: 'easeInOut' }}
-              className="text-lg text-gray-600"
-              style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
-            >
-              {loadingTexts[currentTextIndex]}
-            </motion.p>
-          </AnimatePresence>
+          )}
         </div>
 
         {/* Subtle decorative elements */}
-        <div className="flex justify-center space-x-2">
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="w-2 h-2 bg-emerald-400 rounded-full"
-              animate={{
-                scale: [1, 1.2, 1],
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 1.5,
-                repeat: Number.POSITIVE_INFINITY,
-                delay: i * 0.2,
-              }}
-            />
-          ))}
-        </div>
-
-        {/* Loading status indicators */}
-        <div className="mt-8 flex justify-center space-x-2">
-          {icons.map((_, index) => (
-            <motion.div
-              key={index}
-              className={`w-2 h-2 rounded-full transition-colors duration-300 ${
-                index === currentIconIndex ? 'bg-emerald-500' : 'bg-gray-300'
-              }`}
-              animate={{
-                scale: index === currentIconIndex ? 1.2 : 1,
-              }}
-              transition={{ duration: 0.3 }}
-            />
-          ))}
-        </div>
+        {progress === 100 && (
+          <div className="flex justify-center space-x-2">
+            <AnimatePresence mode="wait">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: 'easeInOut' }}
+                className="w-full flex justify-center gap-x-2"
+              >
+                {[...Array(5)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="w-2 h-2 bg-emerald-400 rounded-full"
+                    animate={{
+                      scale: [1, 1.2, 1],
+                      opacity: [0.5, 1, 0.5],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Number.POSITIVE_INFINITY,
+                      delay: i * 0.01,
+                    }}
+                  />
+                ))}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -11,6 +11,8 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { ErrorMessage } from '@/types/errorType'
 import { clerkClient } from '@clerk/nextjs/server'
+import { redirect } from 'next/navigation'
+import { NavigationLink } from '@/types/globals.enum'
 
 export async function submitOnboardingForm(data: UserOnboardingFormData): Promise<ActionResult> {
   // Validate form fields
@@ -83,6 +85,23 @@ export async function submitOnboardingForm(data: UserOnboardingFormData): Promis
       })
     }
 
+    const cart = await payload.create({
+      collection: 'cart',
+      data: {
+        user,
+      },
+    })
+
+    if (!cart) {
+      await payload.delete({
+        collection: 'users',
+        id: user.id,
+      })
+      throw new ErrorMessage('Fail to create cart for user', ErrorSource.PAYLOAD, 500, {
+        error: payload.logger.error,
+      })
+    }
+
     //update metadata
 
     const clerk = await clerkClient()
@@ -95,6 +114,7 @@ export async function submitOnboardingForm(data: UserOnboardingFormData): Promis
       privateMetadata: {
         payloadID: user.id,
         role: user.role,
+        cartID: cart.id,
       },
     })
 

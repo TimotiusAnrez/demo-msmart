@@ -81,6 +81,9 @@ export interface Config {
     shops: Shop;
     shopProductCategory: ShopProductCategory;
     shopProducts: ShopProduct;
+    productVariant: ProductVariant;
+    cart: Cart;
+    transaction: Transaction;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -107,6 +110,9 @@ export interface Config {
     shopProductCategory: {
       productList: 'shopProducts';
     };
+    shopProducts: {
+      variantList: 'productVariant';
+    };
   };
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
@@ -123,6 +129,9 @@ export interface Config {
     shops: ShopsSelect<false> | ShopsSelect<true>;
     shopProductCategory: ShopProductCategorySelect<false> | ShopProductCategorySelect<true>;
     shopProducts: ShopProductsSelect<false> | ShopProductsSelect<true>;
+    productVariant: ProductVariantSelect<false> | ProductVariantSelect<true>;
+    cart: CartSelect<false> | CartSelect<true>;
+    transaction: TransactionSelect<false> | TransactionSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -421,6 +430,7 @@ export interface Institution {
 export interface ShopCategory {
   id: number;
   name: string;
+  thumbnail?: (number | null) | Media;
   shopList?: {
     docs?: (number | Shop)[];
     hasNextPage?: boolean;
@@ -493,16 +503,11 @@ export interface ShopProduct {
     description: string;
   };
   category: (number | ShopProductCategory)[];
-  variantList?:
-    | {
-        variant: {
-          name: string;
-          thumbnail?: (number | null) | Media;
-          price: number;
-        };
-        id?: string | null;
-      }[]
-    | null;
+  variantList: {
+    docs?: (number | ProductVariant)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -520,6 +525,73 @@ export interface ShopProductCategory {
   };
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productVariant".
+ */
+export interface ProductVariant {
+  id: number;
+  product: number | ShopProduct;
+  name: string;
+  thumbnail?: (number | null) | Media;
+  price: number;
+  stock: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cart".
+ */
+export interface Cart {
+  id: number;
+  user: number | User;
+  itemList?:
+    | {
+        cartItem: CartItem;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CartItem".
+ */
+export interface CartItem {
+  item: number | ShopProduct;
+  quantity: number;
+  variant: number | ProductVariant;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transaction".
+ */
+export interface Transaction {
+  id: number;
+  user: number | User;
+  shop: number | Shop;
+  status: 'PENDING' | 'COMPLETED' | 'FAILED';
+  itemList?:
+    | {
+        transactionItemDetail: TransactionItemDetail;
+        id?: string | null;
+      }[]
+    | null;
+  totalPrice: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TransactionItemDetail".
+ */
+export interface TransactionItemDetail {
+  item: number | ShopProduct;
+  quantity: number;
+  variant: number | ProductVariant;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -583,6 +655,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'shopProducts';
         value: number | ShopProduct;
+      } | null)
+    | ({
+        relationTo: 'productVariant';
+        value: number | ProductVariant;
+      } | null)
+    | ({
+        relationTo: 'cart';
+        value: number | Cart;
+      } | null)
+    | ({
+        relationTo: 'transaction';
+        value: number | Transaction;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -875,6 +959,7 @@ export interface InstitutionsSelect<T extends boolean = true> {
  */
 export interface ShopCategoriesSelect<T extends boolean = true> {
   name?: T;
+  thumbnail?: T;
   shopList?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -949,20 +1034,73 @@ export interface ShopProductsSelect<T extends boolean = true> {
         description?: T;
       };
   category?: T;
-  variantList?:
+  variantList?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "productVariant_select".
+ */
+export interface ProductVariantSelect<T extends boolean = true> {
+  product?: T;
+  name?: T;
+  thumbnail?: T;
+  price?: T;
+  stock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cart_select".
+ */
+export interface CartSelect<T extends boolean = true> {
+  user?: T;
+  itemList?:
     | T
     | {
-        variant?:
-          | T
-          | {
-              name?: T;
-              thumbnail?: T;
-              price?: T;
-            };
+        cartItem?: T | CartItemSelect<T>;
         id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CartItem_select".
+ */
+export interface CartItemSelect<T extends boolean = true> {
+  item?: T;
+  quantity?: T;
+  variant?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "transaction_select".
+ */
+export interface TransactionSelect<T extends boolean = true> {
+  user?: T;
+  shop?: T;
+  status?: T;
+  itemList?:
+    | T
+    | {
+        transactionItemDetail?: T | TransactionItemDetailSelect<T>;
+        id?: T;
+      };
+  totalPrice?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TransactionItemDetail_select".
+ */
+export interface TransactionItemDetailSelect<T extends boolean = true> {
+  item?: T;
+  quantity?: T;
+  variant?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

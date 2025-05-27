@@ -14,6 +14,12 @@ export const ShopCategories: CollectionConfig = {
       required: true,
     },
     {
+      name: 'thumbnail',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+    },
+    {
       name: 'shopList',
       type: 'join',
       collection: 'shops',

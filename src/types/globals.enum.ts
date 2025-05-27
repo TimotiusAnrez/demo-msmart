@@ -29,3 +29,7 @@ export enum AdminRole {
 export enum PublicRole {
   USER = 'USER',
 }
+
+export enum DefaultAssets {
+  PRODUCT = 'https://www.flaticon.com/free-icons/box',
+}

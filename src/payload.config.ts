@@ -18,7 +18,13 @@ import { LocationCategories, Locations } from './collections/locations/config'
 import { ReportCategories, Reports } from './collections/report/config'
 import { Institutions } from './collections/institutions/config'
 import { ShopCategories, Shop } from './collections/shops/config'
-import { ShopProductCategory, ShopProducts } from './collections/shops/products/config'
+import {
+  ProductVariant,
+  ShopProductCategory,
+  ShopProducts,
+} from './collections/shops/products/config'
+import { Carts } from './collections/users/cart/config'
+import { Transaction } from './collections/transaction/config'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -52,6 +58,9 @@ export default buildConfig({
     Shop,
     ShopProductCategory,
     ShopProducts,
+    ProductVariant,
+    Carts,
+    Transaction,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

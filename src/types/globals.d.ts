@@ -10,6 +10,7 @@ declare global {
     private: {
       payloadID: number //payload user id
       role: ('USER' | 'USER_BUSINESS' | 'ADMIN_MS' | 'ADMIN_MSAGRI' | 'SUPER_ADMIN')[]
+      cartID: number //user cart
     }
   }
 }
