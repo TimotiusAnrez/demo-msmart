@@ -26,7 +26,7 @@ export function PublicNavigation() {
 
   return (
     <NavigationMenu>
-      <NavigationMenuList>
+      <NavigationMenuList className="space-x-2">
         {/* Tourism Dropdown */}
         <NavigationMenuItem>
           <NavigationMenuTrigger>Tourism</NavigationMenuTrigger>
@@ -92,12 +92,16 @@ export function PublicNavigation() {
 
         {/* Shopping - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.SHOPPING}>Shopping</Link>
+          <Link href={NavigationLink.SHOPPING} className="text-sm">
+            Shopping
+          </Link>
         </NavigationMenuItem>
 
         {/* Agriculture - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.AGRICULTURE}>Agriculture</Link>
+          <Link href={NavigationLink.AGRICULTURE} className="text-sm">
+            Agriculture
+          </Link>
         </NavigationMenuItem>
 
         {/* Services Dropdown */}
@@ -146,7 +150,9 @@ export function PublicNavigation() {
 
         {/* News - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.NEWS}>News</Link>
+          <Link href={NavigationLink.NEWS} className="text-sm">
+            News
+          </Link>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

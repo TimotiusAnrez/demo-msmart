@@ -39,6 +39,19 @@ export const FarmerProduce: CollectionConfig = {
       required: true,
     },
     {
+      name: 'mediaGalery',
+      type: 'array',
+      required: false,
+      fields: [
+        {
+          name: 'image',
+          type: 'upload',
+          relationTo: 'media',
+          required: false,
+        },
+      ],
+    },
+    {
       name: 'category',
       type: 'relationship',
       relationTo: 'produceCategory',

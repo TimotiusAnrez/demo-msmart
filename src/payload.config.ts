@@ -23,7 +23,7 @@ import {
   ShopProductCategory,
   ShopProducts,
 } from '@/collections/shops/products/config'
-import { Carts } from '@/collections/users/cart/config'
+import { CartItems, Carts } from '@/collections/users/cart/config'
 import { Transaction } from '@/collections/transaction/config'
 import { News, NewsCategories } from '@/collections/news/config'
 import { Farmers } from '@/collections/farmers/config'
@@ -66,6 +66,7 @@ export default buildConfig({
     ShopProducts,
     ProductVariant,
     Carts,
+    CartItems,
     Transaction,
     NewsCategories,
     News,

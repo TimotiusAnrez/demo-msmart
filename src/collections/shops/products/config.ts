@@ -3,9 +3,13 @@ import { ForbiddenCollectionAccess } from '@/collections/access/forbidden'
 import { userOnlyCollectionAccess } from '@/collections/access/userOnly'
 import { userSelfCollectionAccess } from '@/collections/access/userSelf'
 import { CollectionConfig, Field } from 'payload'
+import { number } from 'zod'
 
 export const ShopProductCategory: CollectionConfig = {
   slug: 'shopProductCategory',
+  admin: {
+    useAsTitle: 'name',
+  },
   fields: [
     {
       name: 'name',
@@ -47,6 +51,12 @@ export const ProductInformation: Field = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'defaultPrice',
+      type: 'number',
+      required: true,
+      defaultValue: 0,
+    },
   ],
 }
 
@@ -74,6 +84,7 @@ export const ProductVariant: CollectionConfig = {
       name: 'price',
       type: 'number',
       required: true,
+      index: true,
     },
     {
       name: 'stock',

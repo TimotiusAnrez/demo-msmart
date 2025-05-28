@@ -126,7 +126,7 @@ export const Reports: CollectionConfig = {
           name: 'media',
           type: 'upload',
           relationTo: 'media',
-          required: true,
+          required: false,
         },
         {
           name: 'admin',

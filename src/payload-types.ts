@@ -83,6 +83,7 @@ export interface Config {
     shopProducts: ShopProduct;
     productVariant: ProductVariant;
     cart: Cart;
+    cartItems: CartItem;
     transaction: Transaction;
     newsCategory: NewsCategory;
     news: News;
@@ -116,6 +117,9 @@ export interface Config {
     shopProducts: {
       variantList: 'productVariant';
     };
+    cart: {
+      cartItemList: 'cartItems';
+    };
     farmers: {
       produceList: 'farmerProduce';
     };
@@ -137,6 +141,7 @@ export interface Config {
     shopProducts: ShopProductsSelect<false> | ShopProductsSelect<true>;
     productVariant: ProductVariantSelect<false> | ProductVariantSelect<true>;
     cart: CartSelect<false> | CartSelect<true>;
+    cartItems: CartItemsSelect<false> | CartItemsSelect<true>;
     transaction: TransactionSelect<false> | TransactionSelect<true>;
     newsCategory: NewsCategorySelect<false> | NewsCategorySelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
@@ -382,7 +387,7 @@ export interface Report {
   adminResponse?:
     | {
         comment: string;
-        media: number | Media;
+        media?: (number | null) | Media;
         admin: number | User;
         id?: string | null;
       }[]
@@ -514,6 +519,7 @@ export interface ShopProduct {
       | null;
     name: string;
     description: string;
+    defaultPrice: number;
   };
   category: (number | ShopProductCategory)[];
   variantList?: {
@@ -560,23 +566,26 @@ export interface ProductVariant {
 export interface Cart {
   id: number;
   user: number | User;
-  itemList?:
-    | {
-        cartItem: CartItem;
-        id?: string | null;
-      }[]
-    | null;
+  cartItemList?: {
+    docs?: (number | CartItem)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
   updatedAt: string;
   createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CartItem".
+ * via the `definition` "cartItems".
  */
 export interface CartItem {
-  item: number | ShopProduct;
+  id: number;
+  cart: number | User;
+  product: number | ShopProduct;
+  variant?: (number | null) | ProductVariant;
   quantity: number;
-  variant: number | ProductVariant;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -697,6 +706,12 @@ export interface FarmerProduce {
   id: number;
   farmer: number | Farmer;
   name: string;
+  mediaGalery?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   category: number | ProduceCategory;
   stock: {
     quantity: number;
@@ -800,6 +815,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'cart';
         value: number | Cart;
+      } | null)
+    | ({
+        relationTo: 'cartItems';
+        value: number | CartItem;
       } | null)
     | ({
         relationTo: 'transaction';
@@ -1192,6 +1211,7 @@ export interface ShopProductsSelect<T extends boolean = true> {
             };
         name?: T;
         description?: T;
+        defaultPrice?: T;
       };
   category?: T;
   variantList?: T;
@@ -1217,23 +1237,21 @@ export interface ProductVariantSelect<T extends boolean = true> {
  */
 export interface CartSelect<T extends boolean = true> {
   user?: T;
-  itemList?:
-    | T
-    | {
-        cartItem?: T | CartItemSelect<T>;
-        id?: T;
-      };
+  cartItemList?: T;
   updatedAt?: T;
   createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "CartItem_select".
+ * via the `definition` "cartItems_select".
  */
-export interface CartItemSelect<T extends boolean = true> {
-  item?: T;
-  quantity?: T;
+export interface CartItemsSelect<T extends boolean = true> {
+  cart?: T;
+  product?: T;
   variant?: T;
+  quantity?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1352,6 +1370,12 @@ export interface FarmersSelect<T extends boolean = true> {
 export interface FarmerProduceSelect<T extends boolean = true> {
   farmer?: T;
   name?: T;
+  mediaGalery?:
+    | T
+    | {
+        image?: T;
+        id?: T;
+      };
   category?: T;
   stock?:
     | T

@@ -1,8 +1,6 @@
-import Image from 'next/image'
 import Link from 'next/link'
 import { currentUser } from '@clerk/nextjs/server'
 
-import { NavigationLink } from '@/types/globals.enum'
 import { PublicNavigation } from './public-navigation'
 import { UserNavigation } from './user-navigation'
 import { MobileNav } from './mobile-nav'

@@ -15,6 +15,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
 } from '@/components/ui/sidebar'
+import { Button } from '../ui/button'
 
 const profileNavItems = [
   {
@@ -45,8 +46,12 @@ export function ProfileSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-1">
-          <h3 className="font-semibold">MSmart</h3>
+        <div className="flex items-center gap-2 px-2 py-1 hover:cursor-pointer">
+          <Link href={'/'} className="hover:cursor-pointer">
+            <Button variant="ghost" className="hover:cursor-pointer">
+              MSmart
+            </Button>
+          </Link>
         </div>
       </SidebarHeader>
       <SidebarContent>
