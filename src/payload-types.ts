@@ -156,9 +156,11 @@ export interface Config {
   };
   globals: {
     header: Header;
+    landingPage: LandingPage;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
+    landingPage: LandingPageSelect<false> | LandingPageSelect<true>;
   };
   locale: null;
   user: User & {
@@ -1406,6 +1408,26 @@ export interface Header {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "landingPage".
+ */
+export interface LandingPage {
+  id: number;
+  heroSection: HeroSection;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSection".
+ */
+export interface HeroSection {
+  title: string;
+  tagLine: string;
+  copy: string;
+  bannerImage?: (number | null) | Media;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -1434,6 +1456,26 @@ export interface HeaderSelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "landingPage_select".
+ */
+export interface LandingPageSelect<T extends boolean = true> {
+  heroSection?: T | HeroSectionSelect<T>;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroSection_select".
+ */
+export interface HeroSectionSelect<T extends boolean = true> {
+  title?: T;
+  tagLine?: T;
+  copy?: T;
+  bannerImage?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

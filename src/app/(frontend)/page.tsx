@@ -1,35 +1,30 @@
-import { HeroSection, SiteConfig } from '@/components/frontend/landing/hero-section'
-import { LocalBusinesses } from '@/components/frontend/landing/local-businesses'
-import { BusinessCategories } from '@/components/frontend/landing/business-categories'
-import { Header } from '@/components/global/header'
-import { getPayload } from 'payload'
-import config from '@/payload.config'
-import { Shop } from '@/payload-types'
+import { Media, Shop } from '@/payload-types'
+import { Header } from '@/components/global/header/header'
+import { HeroSection } from '@/components/homepage/hero-section'
+import { SearchFilter } from '@/components/homepage/search-filter'
+import { getPayloadClient } from '@/lib/payload/payload-client'
 
 export default async function HomePage() {
-  const data: SiteConfig = {
-    siteName: 'MSmart',
-    heroTitle: 'Explore Local Businesses',
-    heroSubtitle: 'Discover authentic local experiences and support our community businesses',
-    heroLocation: 'Local Business',
-    tagline:
-      "Support local entrepreneurs and discover unique products that showcase our region's character",
-    categories: ['Restaurants', 'Hotels', 'Businesses', 'Travel Planner'],
-    contact: {
-      address: '123 Main St, City, Country',
-      phone: '+123456789',
-      email: 'contact@msmart.com',
-    },
-    social: {
-      facebook: 'https://facebook.com/msmart',
-      twitter: 'https://twitter.com/msmart',
-      instagram: 'https://instagram.com/msmart',
-      youtube: 'https://youtube.com/msmart',
-    },
+  const payload = await getPayloadClient()
+
+  // Fetch landing page data from the global
+  const landingPageData = await payload.findGlobal({
+    slug: 'landingPage',
+    depth: 2,
+  })
+
+  // Get hero section data with defaults for missing fields
+  const heroData = {
+    title: landingPageData.heroSection?.title || 'Discover Labuan Bajo',
+    tagLine:
+      landingPageData.heroSection?.tagLine || 'Explore the gateway to the Komodo National Park',
+    copy:
+      landingPageData.heroSection?.copy ||
+      'Experience the beauty of East Nusa Tenggara with its pristine beaches, fascinating wildlife, and stunning landscapes.',
+    bannerImage: (landingPageData.heroSection?.bannerImage as Media) || null,
   }
 
-  const payload = await getPayload({ config })
-
+  // Keeping the existing code for shop categories for future use
   const categoryList = await payload.find({
     collection: 'shopCategories',
     depth: 2,
@@ -37,7 +32,7 @@ export default async function HomePage() {
     limit: 10,
   })
 
-  const busienssList = categoryList.docs.map((category) => {
+  const businessList = categoryList.docs.map((category) => {
     return category.shopList?.docs?.map((shop) => {
       return shop as Shop
     })
@@ -46,9 +41,19 @@ export default async function HomePage() {
   return (
     <div className="landing-page">
       <Header />
-      <HeroSection data={data} />
-      <BusinessCategories categories={categoryList.docs} />
-      <LocalBusinesses businesses={busienssList[0] || []} />
+
+      {/* Hero Section with Search */}
+      <div className="relative">
+        <HeroSection
+          title={heroData.title}
+          tagLine={heroData.tagLine}
+          copy={heroData.copy}
+          bannerImage={heroData.bannerImage}
+        />
+        <SearchFilter />
+      </div>
+
+      {/* Additional sections can be added here */}
     </div>
   )
 }

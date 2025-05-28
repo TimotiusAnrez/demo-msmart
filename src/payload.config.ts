@@ -30,6 +30,7 @@ import { Farmers } from '@/collections/farmers/config'
 import { FarmerProduce, ProduceCategory } from '@/collections/farmers/produce/config'
 import { Pages } from '@/collections/pages/config'
 import { Header } from '@/globals/header.global'
+import { LandingPage } from './globals/landingPage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -73,7 +74,7 @@ export default buildConfig({
     ProduceCategory,
     Pages,
   ],
-  globals: [Header],
+  globals: [Header, LandingPage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

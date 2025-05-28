@@ -5,16 +5,30 @@ export enum APIRoute {
 export enum NavigationLink {
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',
-  ONBOARDING = '/onboarding',
+  HOME = '/',
+  TOURISM = '/destinations',
+  ACTIVITY = '/activity',
+  DESTINATIONS = '/destinations',
+  FNB = '/fnb',
+  SHOPPING = '/shopping',
+  AGRICULTURE = '/agriculture',
+  DISCUSSION = '/discussion',
+  FACILITY = '/facility',
+  REPORT = '/report',
+  NEWS = '/news',
+}
+
+export enum PrivateNavigationLink {
+  CART = '/profile/cart',
   PROFILE = '/profile',
   ADMIN = '/admin',
-  HOME = '/',
+  ONBOARDING = '/onboarding',
 }
 
 export enum ClerkNavigationLink {
-  PROFILE = NavigationLink.PROFILE + '(.*)',
-  ADMIN = NavigationLink.ADMIN + '(.*)',
-  ONBOARDING = NavigationLink.ONBOARDING,
+  PROFILE = PrivateNavigationLink.PROFILE + '(.*)',
+  ADMIN = PrivateNavigationLink.ADMIN + '(.*)',
+  ONBOARDING = PrivateNavigationLink.ONBOARDING,
   SIGN_IN = NavigationLink.SIGN_IN,
   SIGN_UP = NavigationLink.SIGN_UP,
 }

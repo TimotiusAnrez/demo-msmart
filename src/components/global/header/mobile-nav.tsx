@@ -1,91 +1,192 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { SignInButton, SignUpButton } from '@clerk/nextjs'
-import { ShoppingCart } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Header } from '@/payload-types'
 import { User } from '@clerk/nextjs/server'
+import { SignInButton, SignUpButton, useUser } from '@clerk/nextjs'
+import { Menu, ShoppingCart, ChevronDown } from 'lucide-react'
 
-interface MobileNavProps {
-  headerConfig: Header
-  isSignedIn?: boolean
-  user?: User | null
-}
+import { NavigationLink, PrivateNavigationLink } from '@/types/globals.enum'
+import { Button } from '@/components/ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-export function MobileNav({ headerConfig, isSignedIn, user }: MobileNavProps) {
-  // Helper function to render menu groups
-  const renderMenuItems = (items: any[] = [], title: string) => {
-    if (!items || items.length === 0) return null
+export function MobileNav() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [tourismOpen, setTourismOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
 
-    return (
-      <div className="mb-4">
-        <h3 className="text-sm font-medium text-gray-500 mb-2">{title}</h3>
-        {items.map((item, index) => (
-          <Link
-            key={`${item.label}-${index}`}
-            href={`/page/${item.page?.slug || '#'}`}
-            className="block py-2 text-lg font-medium"
-          >
-            {item.label}
-          </Link>
-        ))}
-      </div>
-    )
-  }
-
-  // User section for mobile
-  const renderUserSection = () => {
-    if (isSignedIn && user) {
-      return (
-        <div className="border-t pt-4 mt-4">
-          <div className="flex items-center space-x-3 mb-4">
-            <Avatar>
-              <AvatarFallback>{user.primaryEmailAddress?.emailAddress.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="font-medium">{user.primaryEmailAddress?.emailAddress}</p>
-              <Link href="/profile" className="text-sm text-primary/80">
-                View Profile
-              </Link>
-            </div>
-          </div>
-          <Link href="/cart" className="flex items-center space-x-2 py-2 mb-2">
-            <ShoppingCart className="h-5 w-5" />
-            <span>My Cart</span>
-          </Link>
-        </div>
-      )
-    }
-
-    return (
-      <div className="border-t pt-4 mt-4">
-        <SignInButton>
-          <Button variant="ghost" className="w-full justify-start mb-2">
-            Login
-          </Button>
-        </SignInButton>
-        <SignUpButton>
-          <Button className="w-full bg-primary/80 hover:bg-primary">Sign Up</Button>
-        </SignUpButton>
-      </div>
-    )
-  }
+  const user = useUser()
 
   return (
-    <nav className="flex flex-col mt-8">
-      {/* Tourism Menu Items */}
-      {renderMenuItems(headerConfig?.menu || [], 'Tourism')}
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon">
+          <Menu className="h-5 w-5" />
+          <span className="sr-only">Toggle menu</span>
+        </Button>
+      </SheetTrigger>
+      <SheetContent side="right" className="w-[280px] sm:w-[350px] pt-10">
+        <div className="flex flex-col gap-6">
+          {/* Navigation Links */}
+          <div className="flex flex-col space-y-3">
+            {/* Tourism Dropdown */}
+            <Collapsible open={tourismOpen} onOpenChange={setTourismOpen} className="w-full">
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" className="flex w-full justify-between">
+                  <span>Tourism</span>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${
+                      tourismOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-4 flex flex-col space-y-2 mt-1">
+                <Link
+                  href={NavigationLink.ACTIVITY}
+                  className="py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Activity
+                </Link>
+                <Link
+                  href={NavigationLink.DESTINATIONS}
+                  className="py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Destinations
+                </Link>
+                <Link href={NavigationLink.FNB} className="py-2" onClick={() => setIsOpen(false)}>
+                  Food & Beverage
+                </Link>
+              </CollapsibleContent>
+            </Collapsible>
 
-      {/* Service Menu Items */}
-      {renderMenuItems(headerConfig?.service || [], 'Services')}
+            {/* Shopping Direct Link */}
+            <Link
+              href={NavigationLink.SHOPPING}
+              className="px-4 py-2"
+              onClick={() => setIsOpen(false)}
+            >
+              Shopping
+            </Link>
 
-      {/* Agriculture Menu Items */}
-      {renderMenuItems(headerConfig?.agriculture || [], 'Agriculture')}
+            {/* Agriculture Direct Link */}
+            <Link
+              href={NavigationLink.AGRICULTURE}
+              className="px-4 py-2"
+              onClick={() => setIsOpen(false)}
+            >
+              Agriculture
+            </Link>
 
-      {/* User Section */}
-      {renderUserSection()}
-    </nav>
+            {/* Services Dropdown */}
+            <Collapsible open={servicesOpen} onOpenChange={setServicesOpen} className="w-full">
+              <CollapsibleTrigger asChild>
+                <Button variant="ghost" className="flex w-full justify-between">
+                  <span>Services</span>
+                  <ChevronDown
+                    className={`h-4 w-4 transition-transform duration-200 ${
+                      servicesOpen ? 'rotate-180' : ''
+                    }`}
+                  />
+                </Button>
+              </CollapsibleTrigger>
+              <CollapsibleContent className="pl-4 flex flex-col space-y-2 mt-1">
+                <Link
+                  href={NavigationLink.DISCUSSION}
+                  className="py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Discussion
+                </Link>
+                <Link
+                  href={NavigationLink.FACILITY}
+                  className="py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Facility
+                </Link>
+                <Link
+                  href={NavigationLink.REPORT}
+                  className="py-2"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Report
+                </Link>
+              </CollapsibleContent>
+            </Collapsible>
+
+            {/* News Direct Link */}
+            <Link href={NavigationLink.NEWS} className="px-4 py-2" onClick={() => setIsOpen(false)}>
+              News
+            </Link>
+          </div>
+
+          {/* Auth Section */}
+          <div className="border-t pt-4">
+            {user ? (
+              <div className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback>
+                      {user.user?.primaryEmailAddress?.emailAddress.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-muted-foreground">
+                      {user.user?.primaryEmailAddress?.emailAddress}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col space-y-2">
+                  <Link
+                    href={PrivateNavigationLink.PROFILE}
+                    className="px-4 py-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  <Link
+                    href={PrivateNavigationLink.CART}
+                    className="flex items-center gap-2 px-4 py-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <ShoppingCart className="h-4 w-4" />
+                    <span>My Cart</span>
+                  </Link>
+                  <Button
+                    variant="outline"
+                    className="mt-2"
+                    onClick={() => {
+                      window.location.href = '/user/sign-out'
+                      setIsOpen(false)
+                    }}
+                  >
+                    Sign out
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col space-y-2">
+                <SignInButton mode="modal">
+                  <Button variant="outline" className="w-full" onClick={() => setIsOpen(false)}>
+                    Sign In
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button className="w-full" onClick={() => setIsOpen(false)}>
+                    Create Account
+                  </Button>
+                </SignUpButton>
+              </div>
+            )}
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
   )
 }

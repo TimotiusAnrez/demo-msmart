@@ -219,9 +219,6 @@ export const Users: CollectionConfig = {
     {
       type: 'text',
       name: 'fullName',
-      admin: {
-        hidden: true,
-      },
       hooks: {
         beforeChange: [
           ({ siblingData }) => {
