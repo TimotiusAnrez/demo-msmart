@@ -98,9 +98,6 @@ export interface Config {
     discussion: {
       commentList: 'discussionComment';
     };
-    discussionCategories: {
-      discussionList: 'discussion';
-    };
     locationCategories: {
       locationList: 'locations';
     };
@@ -311,11 +308,6 @@ export interface Discussion {
 export interface DiscussionCategory {
   id: number;
   name: string;
-  discussionList?: {
-    docs?: (number | Discussion)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
   isArchived?: boolean | null;
   updatedAt: string;
   createdAt: string;
@@ -1011,7 +1003,6 @@ export interface DiscussionSelect<T extends boolean = true> {
  */
 export interface DiscussionCategoriesSelect<T extends boolean = true> {
   name?: T;
-  discussionList?: T;
   isArchived?: T;
   updatedAt?: T;
   createdAt?: T;

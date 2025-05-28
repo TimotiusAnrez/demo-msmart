@@ -37,50 +37,44 @@ export function PublicNavigation() {
                   onMouseEnter={() => setImage(imageList.destination)}
                   onMouseLeave={() => setImage(imageList.destination)}
                 >
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={NavigationLink.DESTINATIONS}
-                      className="block p-3 space-y-1 rounded-md hover:bg-accent"
-                    >
-                      <div className="font-medium leading-none">Destinations</div>
-                      <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
-                        Explore beautiful destinations and attractions
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
+                  <Link
+                    href={NavigationLink.DESTINATIONS}
+                    className="block p-3 space-y-1 rounded-md hover:bg-accent"
+                  >
+                    <div className="font-medium leading-none">Destinations</div>
+                    <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
+                      Explore beautiful destinations and attractions
+                    </p>
+                  </Link>
                 </li>
                 <li
                   onMouseEnter={() => setImage(imageList.activity)}
                   onMouseLeave={() => setImage(imageList.activity)}
                 >
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={NavigationLink.ACTIVITY}
-                      className="block p-3 space-y-1 rounded-md hover:bg-accent"
-                    >
-                      <div className="font-medium leading-none">Activities</div>
-                      <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
-                        Discover exciting activities and adventures
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
+                  <Link
+                    href={NavigationLink.ACTIVITY}
+                    className="block p-3 space-y-1 rounded-md hover:bg-accent"
+                  >
+                    <div className="font-medium leading-none">Activities</div>
+                    <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
+                      Discover exciting activities and adventures
+                    </p>
+                  </Link>
                 </li>
 
                 <li
                   onMouseEnter={() => setImage(imageList.fnb)}
                   onMouseLeave={() => setImage(imageList.fnb)}
                 >
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={NavigationLink.FNB}
-                      className="block p-3 space-y-1 rounded-md hover:bg-accent"
-                    >
-                      <div className="font-medium leading-none">Food & Beverage</div>
-                      <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
-                        Find local restaurants and culinary experiences
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
+                  <Link
+                    href={NavigationLink.FNB}
+                    className="block p-3 space-y-1 rounded-md hover:bg-accent"
+                  >
+                    <div className="font-medium leading-none">Food & Beverage</div>
+                    <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
+                      Find local restaurants and culinary experiences
+                    </p>
+                  </Link>
                 </li>
               </ul>
               <div className="w-[250px] h-[300px]">
@@ -98,20 +92,12 @@ export function PublicNavigation() {
 
         {/* Shopping - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.SHOPPING} passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Shopping
-            </NavigationMenuLink>
-          </Link>
+          <Link href={NavigationLink.SHOPPING}>Shopping</Link>
         </NavigationMenuItem>
 
         {/* Agriculture - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.AGRICULTURE} passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Agriculture
-            </NavigationMenuLink>
-          </Link>
+          <Link href={NavigationLink.AGRICULTURE}>Agriculture</Link>
         </NavigationMenuItem>
 
         {/* Services Dropdown */}
@@ -121,43 +107,37 @@ export function PublicNavigation() {
             <div className="grid gap-3 p-4 w-[400px]">
               <ul className="grid gap-2">
                 <li>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={NavigationLink.DISCUSSION}
-                      className="block p-3 space-y-1 rounded-md hover:bg-accent"
-                    >
-                      <div className="font-medium leading-none">Discussion</div>
-                      <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
-                        Join community discussions and forums
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
+                  <Link
+                    href={NavigationLink.DISCUSSION}
+                    className="block p-3 space-y-1 rounded-md hover:bg-accent"
+                  >
+                    <div className="font-medium leading-none">Discussion</div>
+                    <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
+                      Join community discussions and forums
+                    </p>
+                  </Link>
                 </li>
                 <li>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={NavigationLink.FACILITY}
-                      className="block p-3 space-y-1 rounded-md hover:bg-accent"
-                    >
-                      <div className="font-medium leading-none">Facility</div>
-                      <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
-                        Find public facilities and amenities
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
+                  <Link
+                    href={NavigationLink.FACILITY}
+                    className="block p-3 space-y-1 rounded-md hover:bg-accent"
+                  >
+                    <div className="font-medium leading-none">Facility</div>
+                    <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
+                      Find public facilities and amenities
+                    </p>
+                  </Link>
                 </li>
                 <li>
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={NavigationLink.REPORT}
-                      className="block p-3 space-y-1 rounded-md hover:bg-accent"
-                    >
-                      <div className="font-medium leading-none">Report</div>
-                      <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
-                        Report issues or provide feedback
-                      </p>
-                    </Link>
-                  </NavigationMenuLink>
+                  <Link
+                    href={NavigationLink.REPORT}
+                    className="block p-3 space-y-1 rounded-md hover:bg-accent"
+                  >
+                    <div className="font-medium leading-none">Report</div>
+                    <p className="line-clamp-2 text-sm text-muted-foreground mt-1">
+                      Report issues or provide feedback
+                    </p>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -166,9 +146,7 @@ export function PublicNavigation() {
 
         {/* News - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.NEWS} passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>News</NavigationMenuLink>
-          </Link>
+          <Link href={NavigationLink.NEWS}>News</Link>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

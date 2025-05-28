@@ -13,7 +13,7 @@ import { redirect, useRouter } from 'next/navigation'
 import { NavigationLink } from '@/types/globals.enum'
 import { useFormStatus } from 'react-dom'
 import Loading from '@/app/(frontend)/loading'
-import TropicalLoading from '@/components/global/tropical-loading'
+import TropicalLoading from '@/components/global/loading/tropical-loading'
 
 type FormValues = z.infer<typeof userOnboardingSchema>
 

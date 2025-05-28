@@ -23,12 +23,6 @@ export const DiscussionCategories: CollectionConfig = {
       label: 'Category Name',
     },
     {
-      name: 'discussionList',
-      type: 'join',
-      collection: 'discussion',
-      on: 'category',
-    },
-    {
       name: 'isArchived',
       type: 'checkbox',
       label: 'Archived',
