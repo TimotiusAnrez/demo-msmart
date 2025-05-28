@@ -11,8 +11,8 @@ export async function Header() {
   const user = await currentUser()
 
   return (
-    <header className="sticky top-0 z-50 w-full flex justify-center">
-      <div className="container flex h-16 items-center justify-between">
+    <header className="sticky top-0 z-50 w-full flex justify-center bg-neutral-50 py-2">
+      <div className="container flex h-16 items-center justify-between bg-neutral-50 p-4 rounded-md">
         <div className="flex items-center gap-2 md:gap-4">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">

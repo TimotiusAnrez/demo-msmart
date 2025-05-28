@@ -638,8 +638,33 @@ export interface News {
     description: string;
     banner: number | Media;
   };
+  newsContentSection?: (NewsParagraphBlock | ParagraphWithImageBlock)[] | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsParagraphBlock".
+ */
+export interface NewsParagraphBlock {
+  paragraphTitle?: string | null;
+  content: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'newsParagraphBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParagraphWithImageBlock".
+ */
+export interface ParagraphWithImageBlock {
+  paragraphTitle?: string | null;
+  content: string;
+  image: number | Media;
+  position: 'default' | 'left' | 'right';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'paragraphWithImageBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1270,8 +1295,36 @@ export interface NewsSelect<T extends boolean = true> {
         description?: T;
         banner?: T;
       };
+  newsContentSection?:
+    | T
+    | {
+        newsParagraphBlock?: T | NewsParagraphBlockSelect<T>;
+        paragraphWithImageBlock?: T | ParagraphWithImageBlockSelect<T>;
+      };
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "NewsParagraphBlock_select".
+ */
+export interface NewsParagraphBlockSelect<T extends boolean = true> {
+  paragraphTitle?: T;
+  content?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ParagraphWithImageBlock_select".
+ */
+export interface ParagraphWithImageBlockSelect<T extends boolean = true> {
+  paragraphTitle?: T;
+  content?: T;
+  image?: T;
+  position?: T;
+  id?: T;
+  blockName?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

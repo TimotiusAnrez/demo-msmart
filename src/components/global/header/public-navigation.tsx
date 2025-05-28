@@ -98,7 +98,7 @@ export function PublicNavigation() {
 
         {/* Shopping - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.SHOPPING} legacyBehavior passHref>
+          <Link href={NavigationLink.SHOPPING} passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Shopping
             </NavigationMenuLink>
@@ -107,7 +107,7 @@ export function PublicNavigation() {
 
         {/* Agriculture - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.AGRICULTURE} legacyBehavior passHref>
+          <Link href={NavigationLink.AGRICULTURE} passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
               Agriculture
             </NavigationMenuLink>
@@ -166,7 +166,7 @@ export function PublicNavigation() {
 
         {/* News - Direct Link */}
         <NavigationMenuItem>
-          <Link href={NavigationLink.NEWS} legacyBehavior passHref>
+          <Link href={NavigationLink.NEWS} passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>News</NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
