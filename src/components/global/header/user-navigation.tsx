@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { SignInButton, SignUpButton, useUser } from '@clerk/nextjs'
+import { SignInButton, SignOutButton, SignUpButton, useUser } from '@clerk/nextjs'
 import { ShoppingCart, User as UserIcon } from 'lucide-react'
 
 import { NavigationLink, PrivateNavigationLink } from '@/types/globals.enum'
@@ -77,11 +77,8 @@ export function UserNavigation() {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onSelect={() => (window.location.href = '/user/sign-out')}
-          >
-            Sign out
+          <DropdownMenuItem>
+            <SignOutButton>Sign out</SignOutButton>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

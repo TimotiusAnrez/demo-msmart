@@ -104,7 +104,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
         <Link
           href={`/shopping/${owner}/${product.id}`}
-          className="text-xs text-blue-600 hover:underline"
+          className="text-xs text-primary hover:underline"
         >
           View Details
         </Link>

@@ -18,13 +18,13 @@ export function NewestProducts({ products }: NewestProductsProps) {
     <section className="mb-16">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-sm text-indigo-600 font-medium">Only the best goods for you.</p>
+          <p className="text-sm text-primary font-medium">Only the best goods for you.</p>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Newest Local Offering
           </h2>
         </div>
         <Link href="#product-catalog">
-          <Button variant="default" className="bg-indigo-600 hover:bg-indigo-700">
+          <Button variant="default" className="bg-primary hover:bg-primary/80">
             Explore All Products <span className="ml-2">→</span>
           </Button>
         </Link>

@@ -20,6 +20,7 @@ export const Facility: CollectionConfig = {
           type: 'upload',
           relationTo: 'media',
           required: false,
+          label: 'Image',
         },
         {
           name: 'name',

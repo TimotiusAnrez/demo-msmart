@@ -16,7 +16,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const payload = await getPayloadClient()
 
-  const { id } = params
+  const { id } = await params
 
   try {
     const farmer = (await payload.findByID({

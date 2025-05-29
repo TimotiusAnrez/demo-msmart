@@ -23,6 +23,52 @@ const loadingTexts = [
   'Just a moment more...',
 ]
 
+export function AnimatedIcon() {
+  const [currentIconIndex, setCurrentIconIndex] = useState(0)
+
+  const iconList = [
+    { component: '🥥', name: 'coconut' },
+    { component: ShoppingCart, name: 'cart' },
+    { component: Shirt, name: 'clothing' },
+    { component: Ball, name: 'ball' },
+    { component: Coffee, name: 'beverage' },
+  ]
+
+  // Cycle through icons every 1.5 seconds
+  useEffect(() => {
+    const iconTimer = setInterval(() => {
+      setCurrentIconIndex((prev) => (prev + 1) % icons.length)
+    }, 1500)
+
+    return () => clearInterval(iconTimer)
+  }, [])
+
+  const currentIcon = icons[currentIconIndex]
+
+  return (
+    <div className=" flex items-center justify-center">
+      <div className="w-24 h-24 mx-auto mb-6 flex items-center justify-center">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIconIndex}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.5, ease: 'easeInOut' }}
+            className="w-full h-full flex items-center justify-center"
+          >
+            {typeof currentIcon.component === 'string' ? (
+              <span className="text-6xl">{currentIcon.component}</span>
+            ) : (
+              <currentIcon.component className="w-16 h-16 text-gray-700" strokeWidth={1.5} />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  )
+}
+
 export default function TropicalLoading() {
   const [currentIconIndex, setCurrentIconIndex] = useState(0)
   const [currentTextIndex, setCurrentTextIndex] = useState(0)

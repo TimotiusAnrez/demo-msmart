@@ -3,6 +3,16 @@ import { Header } from '@/components/global/header/header'
 import { HeroSection } from '@/components/homepage/hero-section'
 import { SearchFilter } from '@/components/homepage/search-filter'
 import { getPayloadClient } from '@/lib/payload/payload-client'
+import { AnimatedIcon } from '@/components/global/loading/tropical-loading'
+
+export function Maintenance({ message }: { message: string }) {
+  return (
+    <div className="w-full h-full py-24  flex flex-col gap-y-10 items-center justify-center">
+      <h1 className="text-2xl font-semibold">{message}</h1>
+      <AnimatedIcon />
+    </div>
+  )
+}
 
 export default async function HomePage() {
   const payload = await getPayloadClient()
@@ -43,7 +53,7 @@ export default async function HomePage() {
       <Header />
 
       {/* Hero Section with Search */}
-      <div className="relative">
+      {/* <div className="relative">
         <HeroSection
           title={heroData.title}
           tagLine={heroData.tagLine}
@@ -51,8 +61,8 @@ export default async function HomePage() {
           bannerImage={heroData.bannerImage}
         />
         <SearchFilter />
-      </div>
-
+      </div> */}
+      <Maintenance message="Landing page still in design for better looks and functinality" />
       {/* Additional sections can be added here */}
     </div>
   )
