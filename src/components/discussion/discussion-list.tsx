@@ -66,7 +66,7 @@ function DiscussionCard({ discussion }: DiscussionCardProps) {
   const categories = category as DiscussionCategory[]
   const publishDate = new Date(createdAt)
   const formattedDate = format(publishDate, 'PPp') // "Jan 1, 2021, 12:00 PM"
-  const commentCount = commentList?.totalDocs || 0
+  const commentCount = commentList?.docs?.length || 0
 
   // Truncate content for preview (max 150 chars)
   const contentPreview = content.length > 150 ? `${content.substring(0, 150)}...` : content
@@ -130,7 +130,7 @@ function DiscussionCard({ discussion }: DiscussionCardProps) {
         {/* Read More Button */}
         <div className="mt-4">
           <Link href={`/discussion/${discussion.id}`}>
-            <Button variant="secondary" size="sm">
+            <Button variant="secondary" size="sm" className="hover:cursor-pointer">
               Read More
             </Button>
           </Link>

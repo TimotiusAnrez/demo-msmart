@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 
 interface ReportDetailPageProps {
   params: {
@@ -183,23 +184,37 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
                 ))}
               </div>
 
-              {/* Report Content */}
-              <div className="prose prose-sm max-w-none mb-6">
-                <p className="whitespace-pre-wrap">{content}</p>
-              </div>
-
-              {/* Report Image */}
-              {reportImage && reportImage.url && (
-                <div className="mt-4 overflow-hidden rounded-lg border">
-                  <Image
-                    src={reportImage.url}
-                    alt={reportImage.alt || 'Report image'}
-                    width={800}
-                    height={600}
-                    className="w-full object-cover"
-                  />
+              <div className="content space-y-4">
+                {/* Report Image */}
+                {reportImage && reportImage.url && (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="cursor-pointer overflow-hidden h-96 rounded-lg border transition-all hover:opacity-90">
+                        <Image
+                          src={reportImage.url}
+                          alt={reportImage.alt || 'Report image'}
+                          width={800}
+                          height={600}
+                          className="w-full h-full object-cover object-center"
+                        />
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="lg:w-[1280px] lg:h-[720px] w-full h-full p-10">
+                      <Image
+                        src={reportImage.url}
+                        alt={reportImage.alt || 'Report image'}
+                        width={800}
+                        height={1280}
+                        className="w-full h-full object-cover object-center rounded-2xl"
+                      />
+                    </DialogContent>
+                  </Dialog>
+                )}
+                {/* Report Content */}
+                <div className="prose prose-sm max-w-none mb-6">
+                  <p className="whitespace-pre-wrap">{content}</p>
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
@@ -235,6 +250,18 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
                           </AvatarFallback>
                         </Avatar>
 
+                        {/* Response Image */}
+                        {responseMedia && responseMedia.url && (
+                          <div className="overflow-hidden aspect-square h-24 rounded-lg border">
+                            <Image
+                              src={responseMedia.url}
+                              alt={responseMedia.alt || 'Response image'}
+                              width={600}
+                              height={400}
+                              className="w-full h-full object-center object-cover"
+                            />
+                          </div>
+                        )}
                         <div>
                           <p className="font-medium">{admin?.fullName || 'Administrator'}</p>
                           <p className="text-xs text-muted-foreground">
@@ -247,19 +274,6 @@ export default async function ReportDetailPage({ params }: ReportDetailPageProps
                       <div className="prose prose-sm max-w-none mb-4">
                         <p className="whitespace-pre-wrap">{response.comment}</p>
                       </div>
-
-                      {/* Response Image */}
-                      {responseMedia && responseMedia.url && (
-                        <div className="overflow-hidden rounded-lg border">
-                          <Image
-                            src={responseMedia.url}
-                            alt={responseMedia.alt || 'Response image'}
-                            width={600}
-                            height={400}
-                            className="w-full object-cover"
-                          />
-                        </div>
-                      )}
                     </div>
                   )
                 })}

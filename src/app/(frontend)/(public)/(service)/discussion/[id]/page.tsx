@@ -23,11 +23,12 @@ interface DiscussionDetailPageProps {
 // Generate metadata for the page
 export async function generateMetadata({ params }: DiscussionDetailPageProps): Promise<Metadata> {
   const payload = await getPayloadClient()
+  const { id } = await params
 
   try {
     const discussion = (await payload.findByID({
       collection: 'discussion',
-      id: params.id,
+      id: id,
     })) as Discussion
 
     return {
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: DiscussionDetailPageProps): P
 }
 
 export default async function DiscussionDetailPage({ params }: DiscussionDetailPageProps) {
-  const { id } = params
+  const { id } = await params
   const payload = await getPayloadClient()
 
   // Fetch the discussion by ID
@@ -63,7 +64,7 @@ export default async function DiscussionDetailPage({ params }: DiscussionDetailP
   const categories = category as DiscussionCategory[]
   const publishDate = new Date(createdAt)
   const formattedDate = format(publishDate, 'PPp') // "Jan 1, 2021, 12:00 PM"
-  const commentCount = commentList?.totalDocs || 0
+  const commentCount = commentList?.docs?.length || 0
   const comments = commentList?.docs || []
   const isArchived = status === 'ARCHIVED'
   const isReported = status === 'REPORTED'

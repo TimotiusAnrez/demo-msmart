@@ -35,6 +35,8 @@ import {
 } from '@/components/ui/select'
 import { DiscussionCategory } from '@/payload-types'
 import { toast } from 'sonner'
+import { createDiscussion } from '@/app/api/discussions/actions'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   title: z
@@ -57,6 +59,8 @@ interface CreateDiscussionDialogProps {
 
 export function CreateDiscussionDialog({ children, categories }: CreateDiscussionDialogProps) {
   const [open, setOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter()
 
   const form = useForm<DiscussionFormValues>({
     resolver: zodResolver(formSchema),
@@ -67,14 +71,40 @@ export function CreateDiscussionDialog({ children, categories }: CreateDiscussio
     },
   })
 
-  function onSubmit(values: DiscussionFormValues) {
-    // In a real implementation, this would send a request to create a discussion
-    // For now, just show a toast with the form values
-    toast.success(JSON.stringify(values))
+  async function onSubmit(values: DiscussionFormValues) {
+    setIsSubmitting(true)
 
-    // Close the dialog and reset the form
-    setOpen(false)
-    form.reset()
+    try {
+      // Call the server action to create a new discussion
+      const result = await createDiscussion({
+        title: values.title,
+        category: values.category,
+        content: values.content,
+      })
+
+      if (result.success) {
+        toast.success(result.message)
+
+        // Close the dialog and reset the form
+        setOpen(false)
+        form.reset()
+
+        // Refresh the discussions list
+        router.refresh()
+
+        // Redirect to the new discussion if created successfully
+        if (result.data?.id) {
+          router.push(`/discussion/${result.data.id}`)
+        }
+      } else {
+        toast.error(result.message)
+      }
+    } catch (error) {
+      console.error('Error creating discussion:', error)
+      toast.error('Failed to create discussion')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -186,7 +216,9 @@ export function CreateDiscussionDialog({ children, categories }: CreateDiscussio
               <Button type="button" variant="outline" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
-              <Button type="submit">Create Discussion</Button>
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? 'Creating...' : 'Create Discussion'}
+              </Button>
             </DialogFooter>
           </form>
         </Form>

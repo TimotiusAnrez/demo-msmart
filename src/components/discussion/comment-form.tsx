@@ -8,6 +8,7 @@ import * as z from 'zod'
 import { Button } from '@/components/ui/button'
 import TextField from '@/components/form/text-field'
 import { toast } from 'sonner'
+import { createComment } from '@/app/api/comments/actions'
 
 // Define Zod schema for comment validation
 const commentSchema = z.object({
@@ -38,17 +39,21 @@ export function CommentForm({ discussionId }: CommentFormProps) {
     setIsSubmitting(true)
 
     try {
-      // In a real implementation, this would send a request to add a comment
-      // For this example, we just show a toast notification
+      // Call the server action to create a new comment
+      const result = await createComment({
+        content: data.content,
+        discussionId,
+      })
 
-      // Simulating API call delay
-      await new Promise((resolve) => setTimeout(resolve, 500))
-
-      toast.success('Comment added successfully')
-
-      // Reset the form after successful submission
-      methods.reset()
+      if (result.success) {
+        toast.success(result.message)
+        // Reset the form after successful submission
+        methods.reset()
+      } else {
+        toast.error(result.message)
+      }
     } catch (error) {
+      console.error('Error submitting comment:', error)
       toast.error('Failed to add comment')
     } finally {
       setIsSubmitting(false)
@@ -68,8 +73,8 @@ export function CommentForm({ discussionId }: CommentFormProps) {
             required
             type="text"
             wrapperClassName="w-full"
+            className="w-full"
           />
-
           <div className="flex justify-end">
             <Button type="submit" disabled={isSubmitting} className="gap-2">
               {isSubmitting ? 'Posting...' : 'Post Comment'}

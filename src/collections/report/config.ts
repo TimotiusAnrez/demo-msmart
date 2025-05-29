@@ -133,13 +133,6 @@ export const Reports: CollectionConfig = {
           type: 'relationship',
           relationTo: 'users',
           required: true,
-          hooks: {
-            beforeChange: [
-              ({ req }) => {
-                return req.user
-              },
-            ],
-          },
         },
       ],
       required: false,

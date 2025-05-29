@@ -49,6 +49,7 @@ import {
 } from '@/components/ui/drawer'
 import { toast } from 'sonner'
 import { useIsMobile } from '@/hooks/use-mobile'
+import { createReport } from '@/app/api/reports/actions'
 
 const formSchema = z.object({
   title: z
@@ -60,7 +61,7 @@ const formSchema = z.object({
     .min(20, { message: 'Report content must be at least 20 characters' })
     .max(2000, { message: 'Report content must be less than 2000 characters' }),
   category: z.string({ required_error: 'Please select at least one category' }),
-  media: z.string().optional(),
+  media: z.string({ required_error: 'Please upload an image for your report' }),
 })
 
 type FormValues = z.infer<typeof formSchema>
@@ -98,24 +99,54 @@ export function CreateReportDialog({ children, categories }: CreateReportDialogP
     }
 
     try {
-      const response = await fetch('/api/reports', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: data.title,
-          content: data.content,
-          categoryId: data.category,
-          mediaId: data.media,
-        }),
-      })
+      setUploading(true)
 
-      if (!response.ok) {
-        throw new Error('Failed to create report')
+      // Handle file upload if an image was selected
+      let mediaId: number | undefined
+
+      if (singleImage) {
+        // Create FormData for file upload
+        const formData = new FormData()
+        formData.append('file', singleImage)
+        formData.append('alt', `Image for report: ${data.title}`)
+
+        // Upload the file first
+        const uploadResponse = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        })
+
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload image')
+        }
+
+        const uploadResult = await uploadResponse.json()
+
+        if (!uploadResult.success) {
+          throw new Error(uploadResult.message || 'Failed to upload image')
+        }
+
+        // Get the media ID from the upload result
+        mediaId = uploadResult.media.id
+      }
+      // Add this right after getting the mediaId
+      // Ensure mediaId is available before proceeding
+      if (!mediaId) {
+        toast.error('An image is required for this report')
+        return
       }
 
-      const result = await response.json()
+      // Call the server action to create the report
+      const result = await createReport({
+        title: data.title,
+        content: data.content,
+        categoryId: data.category,
+        mediaId,
+      })
+
+      if (!result.success) {
+        throw new Error(result.message)
+      }
 
       // Close dialog and reset form
       setOpen(false)
@@ -123,14 +154,18 @@ export function CreateReportDialog({ children, categories }: CreateReportDialogP
       setSingleImage(undefined)
 
       // Show success message
-      toast.success('Report created successfully')
+      toast.success(result.message)
 
       // Navigate to the new report
-      router.push(`${NavigationLink.REPORT}/${result.id}`)
-      router.refresh()
+      if (result.data?.id) {
+        router.push(`${NavigationLink.REPORT}/${result.data.id}`)
+        router.refresh()
+      }
     } catch (error) {
       console.error('Error creating report:', error)
-      toast.error('Something went wrong')
+      toast.error(error instanceof Error ? error.message : 'Something went wrong')
+    } finally {
+      setUploading(false)
     }
   }
 
