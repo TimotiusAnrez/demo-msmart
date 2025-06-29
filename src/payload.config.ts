@@ -1,34 +1,40 @@
 // storage-adapter-import-placeholder
-import { postgresAdapter } from '@payloadcms/db-postgres'
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
+import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 
-import { Users } from '@/collections/users/config'
-import { Media } from '@/collections/media/config'
 import {
   Discussion,
   DiscussionCategories,
   DiscussionComment,
-} from '@/collections/discussion/config'
-import { LocationCategories, Locations } from '@/collections/locations/config'
-import { ReportCategories, Reports } from '@/collections/report/config'
-import { Facility } from '@/collections/institutions/config'
-import { ShopCategories, Shop } from '@/collections/shops/config'
-import {
-  ProductVariant,
+  Users,
+  Media,
+  Locations,
+  LocationCategories,
+  Reports,
+  ReportCategories,
+  Facility,
+  ShopCategories,
+  Shop,
   ShopProductCategory,
   ShopProducts,
-} from '@/collections/shops/products/config'
-import { CartItems, Carts } from '@/collections/users/cart/config'
-import { Transaction } from '@/collections/transaction/config'
-import { News, NewsCategories } from '@/collections/news/config'
-import { Farmers } from '@/collections/farmers/config'
-import { FarmerProduce, ProduceCategory } from '@/collections/farmers/produce/config'
-import { Pages } from '@/collections/pages/config'
+  ProductVariant,
+  AgriCartItems,
+  AgriCarts,
+  Carts,
+  CartItems,
+  Transaction,
+  NewsCategories,
+  News,
+  Farmers,
+  FarmerProduce,
+  ProduceCategory,
+  Pages,
+} from './collections'
 import { Header } from '@/globals/header.global'
 import { LandingPage } from './globals/landingPage'
 
@@ -65,6 +71,8 @@ export default buildConfig({
     ShopProductCategory,
     ShopProducts,
     ProductVariant,
+    AgriCartItems,
+    AgriCarts,
     Carts,
     CartItems,
     Transaction,
@@ -81,14 +89,19 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: postgresAdapter({
-    pool: {
-      connectionString: process.env.DATABASE_URI || '',
+  db: sqliteAdapter({
+    client: {
+      url: process.env.DATABASE_URI || '',
     },
   }),
   sharp,
   plugins: [
-    payloadCloudPlugin(),
-    // storage-adapter-placeholder
+    vercelBlobStorage({
+      enabled: true,
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || '',
+    }),
   ],
 })

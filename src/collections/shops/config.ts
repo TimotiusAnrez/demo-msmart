@@ -10,9 +10,6 @@ export const ShopCategories: CollectionConfig = {
   slug: 'shopCategories',
   admin: {
     useAsTitle: 'name',
-    hidden: (args) => {
-      return !checkRolePublic(['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
-    },
   },
   fields: [
     {

@@ -5,9 +5,6 @@ export const ProduceCategory: CollectionConfig = {
   slug: 'produceCategory',
   admin: {
     useAsTitle: 'name',
-    hidden: (args) => {
-      return !checkRolePublic(['ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
-    },
   },
   fields: [
     {
@@ -22,9 +19,6 @@ export const FarmerProduce: CollectionConfig = {
   slug: 'farmerProduce',
   admin: {
     useAsTitle: 'name',
-    hidden: (args) => {
-      return !checkRolePublic(['ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
-    },
   },
   fields: [
     {

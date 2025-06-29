@@ -16,6 +16,7 @@ export enum NavigationLink {
   FACILITY = '/facility',
   REPORT = '/report',
   NEWS = '/news',
+  PROFILE = '/profile',
 }
 
 export enum PrivateNavigationLink {

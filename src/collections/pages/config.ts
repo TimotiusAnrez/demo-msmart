@@ -6,9 +6,6 @@ export const Pages: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'slug', 'createdAt'],
-    hidden: (args) => {
-      return !checkRolePublic(['ADMIN_MS', 'SUPER_ADMIN'], args.user.role)
-    },
   },
   fields: [
     {

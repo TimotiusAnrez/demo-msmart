@@ -5,10 +5,8 @@ const nextConfig = {
   // Your Next.js config here
   images: {
     remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com/**',
-      },
+      new URL('https://images.unsplash.com/**'),
+      new URL('https://www.flaticon.com/**'),
     ],
   },
 }

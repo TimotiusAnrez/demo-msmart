@@ -3,6 +3,7 @@
 import { User, ShoppingCart, FileText, MessageSquare, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { SignOutButton } from '@clerk/nextjs'
 
 import {
   Sidebar,
@@ -26,6 +27,11 @@ const profileNavItems = [
   {
     title: 'Cart',
     url: '/profile/cart',
+    icon: ShoppingCart,
+  },
+  {
+    title: 'Agri Cart',
+    url: '/profile/agriCart',
     icon: ShoppingCart,
   },
   {
@@ -72,6 +78,9 @@ export function ProfileSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SignOutButton>
+          <Button>Sign out</Button>
+        </SignOutButton>
       </SidebarContent>
     </Sidebar>
   )

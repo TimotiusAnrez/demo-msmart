@@ -11,6 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import { formatPrice } from '@/lib/utils'
 import { toast } from 'sonner'
+import { addToAgriCart } from '@/app/(frontend)/(protected)/profile/agriCart/actions'
 
 interface ProduceDetailProps {
   produce: FarmerProduce
@@ -69,15 +70,30 @@ export default function ProduceDetail({ produce, farmer, isAuthenticated }: Prod
     try {
       setIsLoading(true)
 
-      // Show success toast notification
-      toast.success(`Added ${quantity} ${produce.stock.unit} of ${produce.name} to cart`, {
-        description: `From ${farmer.personal.firstName} ${farmer.personal.lastName}`,
+      const result = await addToAgriCart({
+        produceId: produce.id,
+        quantity: quantity,
       })
 
-      // Reset quantity after adding to cart
-      setQuantity(1)
+      if (result.success) {
+        // Show success toast notification
+        toast.success(`Added ${quantity} ${produce.stock.unit} of ${produce.name} to cart`, {
+          description: `From ${farmer.personal.firstName} ${farmer.personal.lastName}`,
+          action: {
+            label: 'View Cart',
+            onClick: () => router.push('/profile/agriCart'),
+          },
+        })
+
+        // Reset quantity after adding to cart
+        setQuantity(1)
+      } else {
+        // Show error toast if the server action failed
+        toast.error(result.error || 'Failed to add item to cart')
+      }
     } catch (error) {
       toast.error('Failed to add item to cart')
+      console.error('Error adding to cart:', error)
     } finally {
       setIsLoading(false)
     }

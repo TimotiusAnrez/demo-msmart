@@ -82,6 +82,8 @@ export interface Config {
     shopProductCategory: ShopProductCategory;
     shopProducts: ShopProduct;
     productVariant: ProductVariant;
+    agriCartItems: AgriCartItem;
+    agriCart: AgriCart;
     cart: Cart;
     cartItems: CartItem;
     transaction: Transaction;
@@ -117,6 +119,9 @@ export interface Config {
     shopProducts: {
       variantList: 'productVariant';
     };
+    agriCart: {
+      agriCartItemList: 'agriCartItems';
+    };
     cart: {
       cartItemList: 'cartItems';
     };
@@ -140,6 +145,8 @@ export interface Config {
     shopProductCategory: ShopProductCategorySelect<false> | ShopProductCategorySelect<true>;
     shopProducts: ShopProductsSelect<false> | ShopProductsSelect<true>;
     productVariant: ProductVariantSelect<false> | ProductVariantSelect<true>;
+    agriCartItems: AgriCartItemsSelect<false> | AgriCartItemsSelect<true>;
+    agriCart: AgriCartSelect<false> | AgriCartSelect<true>;
     cart: CartSelect<false> | CartSelect<true>;
     cartItems: CartItemsSelect<false> | CartItemsSelect<true>;
     transaction: TransactionSelect<false> | TransactionSelect<true>;
@@ -561,6 +568,100 @@ export interface ProductVariant {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agriCartItems".
+ */
+export interface AgriCartItem {
+  id: number;
+  agriCart: number | AgriCart;
+  produce: number | FarmerProduce;
+  quantity: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agriCart".
+ */
+export interface AgriCart {
+  id: number;
+  user: number | User;
+  agriCartItemList?: {
+    docs?: (number | AgriCartItem)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "farmerProduce".
+ */
+export interface FarmerProduce {
+  id: number;
+  farmer: number | Farmer;
+  name: string;
+  mediaGalery?:
+    | {
+        image?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
+  category: number | ProduceCategory;
+  stock: {
+    quantity: number;
+    unit: 'KG' | 'TON';
+  };
+  price: {
+    nominal: number;
+    unit: 'KG' | 'TON';
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "farmers".
+ */
+export interface Farmer {
+  id: number;
+  fullName?: string | null;
+  personal: {
+    firstName: string;
+    lastName: string;
+  };
+  contact: {
+    phone: string;
+    whatsapp: string;
+  };
+  location: {
+    address: string;
+    /**
+     * @minItems 2
+     * @maxItems 2
+     */
+    geo: [number, number];
+  };
+  produceList?: {
+    docs?: (number | FarmerProduce)[];
+    hasNextPage?: boolean;
+    totalDocs?: number;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "produceCategory".
+ */
+export interface ProduceCategory {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "cart".
  */
 export interface Cart {
@@ -669,73 +770,6 @@ export interface ParagraphWithImageBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "farmers".
- */
-export interface Farmer {
-  id: number;
-  fullName?: string | null;
-  personal: {
-    firstName: string;
-    lastName: string;
-  };
-  contact: {
-    phone: string;
-    whatsapp: string;
-  };
-  location: {
-    address: string;
-    /**
-     * @minItems 2
-     * @maxItems 2
-     */
-    geo: [number, number];
-  };
-  produceList?: {
-    docs?: (number | FarmerProduce)[];
-    hasNextPage?: boolean;
-    totalDocs?: number;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "farmerProduce".
- */
-export interface FarmerProduce {
-  id: number;
-  farmer: number | Farmer;
-  name: string;
-  mediaGalery?:
-    | {
-        image?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
-  category: number | ProduceCategory;
-  stock: {
-    quantity: number;
-    unit: 'KG' | 'TON';
-  };
-  price: {
-    nominal: number;
-    unit: 'KG' | 'TON';
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "produceCategory".
- */
-export interface ProduceCategory {
-  id: number;
-  name: string;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pages".
  */
 export interface Page {
@@ -811,6 +845,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'productVariant';
         value: number | ProductVariant;
+      } | null)
+    | ({
+        relationTo: 'agriCartItems';
+        value: number | AgriCartItem;
+      } | null)
+    | ({
+        relationTo: 'agriCart';
+        value: number | AgriCart;
       } | null)
     | ({
         relationTo: 'cart';
@@ -1228,6 +1270,27 @@ export interface ProductVariantSelect<T extends boolean = true> {
   thumbnail?: T;
   price?: T;
   stock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agriCartItems_select".
+ */
+export interface AgriCartItemsSelect<T extends boolean = true> {
+  agriCart?: T;
+  produce?: T;
+  quantity?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "agriCart_select".
+ */
+export interface AgriCartSelect<T extends boolean = true> {
+  user?: T;
+  agriCartItemList?: T;
   updatedAt?: T;
   createdAt?: T;
 }

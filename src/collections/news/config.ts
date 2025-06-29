@@ -5,9 +5,6 @@ export const NewsCategories: CollectionConfig = {
   slug: 'newsCategory',
   admin: {
     useAsTitle: 'name',
-    hidden: (args) => {
-      return !checkRolePublic(['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
-    },
   },
   fields: [
     {

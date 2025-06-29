@@ -11,9 +11,6 @@ export const DiscussionCategories: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'createdAt'],
-    hidden: (args) => {
-      return !checkRolePublic(['ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], args.user.role)
-    },
   },
   fields: [
     {

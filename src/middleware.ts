@@ -1,5 +1,5 @@
 import { clerkClient, clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
-import { ClerkNavigationLink, NavigationLink } from './types/globals.enum'
+import { ClerkNavigationLink, NavigationLink, PrivateNavigationLink } from './types/globals.enum'
 import { NextRequest, NextResponse } from 'next/server'
 import { checkRolePublic } from './helper/checkRoleHelper'
 
@@ -33,12 +33,12 @@ const isPublicRoute = createRouteMatcher([
   NavigationLink.HOME,
 ])
 
-const isOnboardingRoute = createRouteMatcher([NavigationLink.ONBOARDING])
+const isOnboardingRoute = createRouteMatcher([ClerkNavigationLink.ONBOARDING])
 
 const isProtectedRoute = createRouteMatcher([
   ClerkNavigationLink.PROFILE,
   ClerkNavigationLink.ADMIN,
-  NavigationLink.ONBOARDING,
+  ClerkNavigationLink.ONBOARDING,
 ])
 
 const isNeedOnboardingRoute = createRouteMatcher([
@@ -56,12 +56,12 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 
     //going to onboarding via manually but have complete the onboarding will redirect to profile
     if (isOnboardingRoute(req) && sessionClaims.metadata.onboardingComplete) {
-      return NextResponse.redirect(new URL(NavigationLink.PROFILE, req.url))
+      return NextResponse.redirect(new URL(PrivateNavigationLink.PROFILE, req.url))
     }
 
     //authed but onboarding not complete but going to route need onboarding
     if (isNeedOnboardingRoute(req) && !sessionClaims.metadata.onboardingComplete) {
-      const onboardingUrl = NavigationLink.ONBOARDING
+      const onboardingUrl = ClerkNavigationLink.ONBOARDING
       return NextResponse.redirect(new URL(onboardingUrl, req.url))
     }
 
@@ -70,7 +70,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
       const client = await clerkClient()
       const response = await client.users.getUser(userId)
 
-      if (!response) return redirectToSignIn({ returnBackUrl: NavigationLink.PROFILE })
+      if (!response) return redirectToSignIn({ returnBackUrl: PrivateNavigationLink.PROFILE })
 
       //retrive the role and widen the type
       const role = response.privateMetadata.role as (
@@ -83,7 +83,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 
       //check if role exist
       if (!role || role.length < 1)
-        return redirectToSignIn({ returnBackUrl: NavigationLink.PROFILE })
+        return redirectToSignIn({ returnBackUrl: PrivateNavigationLink.PROFILE })
 
       //if true let them pass
       if (checkRolePublic(['USER_BUSINESS', 'ADMIN_MS', 'ADMIN_MSAGRI', 'SUPER_ADMIN'], role)) {
@@ -91,7 +91,7 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
       }
 
       //if false redirect to profile
-      return NextResponse.redirect(new URL(NavigationLink.PROFILE, req.url))
+      return NextResponse.redirect(new URL(PrivateNavigationLink.PROFILE, req.url))
     }
 
     //authed but not going to need onboarding route

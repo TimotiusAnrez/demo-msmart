@@ -102,6 +102,23 @@ export async function submitOnboardingForm(data: UserOnboardingFormData): Promis
       })
     }
 
+    const agriCart = await payload.create({
+      collection: 'agriCart',
+      data: {
+        user,
+      },
+    })
+
+    if (!agriCart) {
+      await payload.delete({
+        collection: 'users',
+        id: user.id,
+      })
+      throw new ErrorMessage('Fail to create agri cart for user', ErrorSource.PAYLOAD, 500, {
+        error: payload.logger.error,
+      })
+    }
+
     //update metadata
 
     const clerk = await clerkClient()
@@ -115,6 +132,7 @@ export async function submitOnboardingForm(data: UserOnboardingFormData): Promis
         payloadID: user.id,
         role: user.role,
         cartID: cart.id,
+        agriCartID: agriCart.id,
       },
     })
 

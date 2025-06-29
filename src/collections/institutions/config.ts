@@ -7,10 +7,6 @@ export const Facility: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'createdAt'],
   },
-  access: {
-    create: adminOnlyCollectionAccess,
-    update: adminOnlyCollectionAccess,
-  },
   fields: [
     {
       type: 'row',

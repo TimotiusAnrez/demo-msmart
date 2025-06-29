@@ -1,9 +1,10 @@
 'use client'
 
-import { User, ShoppingCart, FileText, MessageSquare, Settings } from 'lucide-react'
+import { User, ShoppingCart, FileText, MessageSquare, Settings, ShoppingBag } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-
+import { SignOutButton } from '@clerk/nextjs'
+import { Button } from '@/components/ui/button'
 import {
   Sidebar,
   SidebarContent,
@@ -15,12 +16,18 @@ import {
   SidebarMenuItem,
   SidebarHeader,
 } from '@/components/ui/sidebar'
+import { NavigationLink } from '@/types/globals.enum'
 
 const profileNavItems = [
   {
     title: 'Profile',
     url: '/profile',
     icon: User,
+  },
+  {
+    title: 'Agri Cart',
+    url: '/profile/agriCart',
+    icon: ShoppingBag,
   },
   {
     title: 'Cart',
@@ -45,9 +52,11 @@ export function ProfileSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <div className="flex items-center gap-2 px-2 py-1">
-          <h3 className="font-semibold">MSmart</h3>
-        </div>
+        <Link href={NavigationLink.HOME}>
+          <div className="flex items-center gap-2 px-2 py-1">
+            <h3 className="font-semibold">MSmart</h3>
+          </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -67,6 +76,9 @@ export function ProfileSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SignOutButton>
+          <Button>Sign out</Button>
+        </SignOutButton>
       </SidebarContent>
     </Sidebar>
   )

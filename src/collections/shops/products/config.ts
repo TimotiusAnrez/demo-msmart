@@ -98,7 +98,6 @@ export const ShopProducts: CollectionConfig = {
   slug: 'shopProducts',
   admin: {
     useAsTitle: 'productName',
-    hidden: true,
   },
   fields: [
     {
@@ -116,9 +115,7 @@ export const ShopProducts: CollectionConfig = {
           },
         ],
       },
-      admin: {
-        hidden: true,
-      },
+      admin: {},
     },
     {
       type: 'tabs',

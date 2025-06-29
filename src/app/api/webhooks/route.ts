@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
     if (!id) return new Response('No user id', { status: 403 })
 
     if (eventType === 'user.created') {
+      //dangerous, should have created the user first in payload
       // Verify id exists in the webhook data
       if (!id) {
         return new Response('Forbidden: No user id provided', { status: 403 })
