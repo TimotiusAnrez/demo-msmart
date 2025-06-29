@@ -5,6 +5,7 @@ import { FacilityFilters } from './components/facility-filters'
 import { FacilityGrid } from './components/facility-grid'
 import { FacilityPagination } from './components/facility-pagination'
 import { Header } from '@/components/global/header/header'
+import MapSheet from '@/components/map/mapSheet'
 
 export const metadata: Metadata = {
   title: 'Public Facilities | Labuan Bajo SMART',
@@ -54,6 +55,12 @@ export default async function FacilityPage({ searchParams }: FacilityPageProps) 
 
   const facilities = facilitiesResponse.docs as Facility[]
   const totalPages = Math.ceil(facilitiesResponse.totalDocs / ITEMS_PER_PAGE)
+  const facilityPosition = facilities.map((facility: Facility) => {
+    return {
+      lat: facility.location.geo[0],
+      lng: facility.location.geo[1],
+    }
+  })
 
   // Get all sectors for filter options
   const sectors = ['HEALTH', 'EDUCATION', 'GOVERNMENT', 'PUBLIC_SERVICE', 'INFRASTRUCTURE']
@@ -63,10 +70,15 @@ export default async function FacilityPage({ searchParams }: FacilityPageProps) 
       <Header />
       <div className="w-full p-10">
         {/* Page Header */}
-        <h1 className="text-2xl font-bold mb-4">Public Facilities</h1>
-        <p className="text-muted-foreground mb-6">
-          Find public facilities and services in Labuan Bajo
-        </p>
+        <div className="header w-full flex justify-between items-center">
+          <div className="copy">
+            <h1 className="text-2xl font-bold mb-4">Public Facilities</h1>
+            <p className="text-muted-foreground mb-6">
+              Find public facilities and services in Labuan Bajo
+            </p>
+          </div>
+          <MapSheet position={facilityPosition} />
+        </div>
 
         {/* Filters Section */}
         <FacilityFilters sectors={sectors} activeSector={sector} searchQuery={search || ''} />
