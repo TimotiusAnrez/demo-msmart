@@ -36,7 +36,8 @@ export function ProduceCard({ produce }: ProduceCardProps) {
           <Image
             src={imageUrl}
             alt={produce.name}
-            fill
+            width={500}
+            height={500}
             sizes="(max-width: 768px) 100vw, 33vw"
             className="object-cover"
           />

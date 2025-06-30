@@ -54,7 +54,8 @@ function NewsCard({ article }: NewsCardProps) {
           <Image
             src={banner.url}
             alt={banner.alt || article.meta.title}
-            fill
+            width={500}
+            height={500}
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
         ) : (

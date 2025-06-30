@@ -51,7 +51,8 @@ export function HeroSection({ data }: HeroSectionProps) {
         <Image
           src="/images/hero-beach.jpg"
           alt="Beautiful local destination"
-          fill
+          width={500}
+          height={500}
           className="object-cover"
           priority
         />

@@ -156,7 +156,8 @@ export default async function FacilityDetailPage({ params }: FacilityDetailPageP
                 <Image
                   src={logoUrl}
                   alt={`${name} logo`}
-                  fill
+                  width={500}
+                  height={500}
                   className="object-cover"
                   sizes="(max-width: 768px) 96px, 128px"
                 />

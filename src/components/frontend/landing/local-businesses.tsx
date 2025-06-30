@@ -51,7 +51,8 @@ export function LocalBusinesses({ businesses }: LocalBusinessesProps) {
                   <Image
                     src={data.image || '/placeholder.svg'}
                     alt={data.information.tradingName || 'Business Image'}
-                    fill
+                    width={500}
+                    height={500}
                     className="object-cover"
                   />
                   <Badge className="absolute top-3 left-3 bg-primary/80">{data.category}</Badge>

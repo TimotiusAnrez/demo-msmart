@@ -63,7 +63,8 @@ export default async function HomePage() {
             <Image
               src={heroData.bannerImage.url}
               alt={heroData.bannerImage.alt || 'Labuan Bajo scenic view'}
-              fill
+              width={500}
+              height={500}
               priority
               className="object-cover"
             />

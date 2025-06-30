@@ -109,7 +109,8 @@ export default function ProduceDetail({ produce, farmer, isAuthenticated }: Prod
             <Image
               src={mediaGallery[currentImageIndex].url}
               alt={produce.name}
-              fill
+              width={500}
+              height={500}
               className="object-cover"
             />
           ) : (
@@ -158,7 +159,8 @@ export default function ProduceDetail({ produce, farmer, isAuthenticated }: Prod
                   <Image
                     src={media.url}
                     alt={`Thumbnail ${index + 1}`}
-                    fill
+                    width={500}
+                    height={500}
                     className="object-cover"
                   />
                 ) : (

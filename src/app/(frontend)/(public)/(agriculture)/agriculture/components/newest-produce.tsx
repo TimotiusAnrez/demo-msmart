@@ -55,7 +55,8 @@ export function NewestProduce({ produce }: NewestProduceProps) {
                   <Image
                     src={imageUrl}
                     alt={item.name}
-                    fill
+                    width={500}
+                    height={500}
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                     className="object-cover"
                   />

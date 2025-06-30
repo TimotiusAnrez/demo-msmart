@@ -94,7 +94,7 @@ export default async function AgriculturePage({
       <Header />
       <div className="container mx-auto px-4 py-8">
         {/* Section 1: Newest Products with CTA */}
-        <NewestProducts products={newestProductsData.docs as ShopProduct[]} />
+        {/* <NewestProducts products={newestProductsData.docs as ShopProduct[]} /> */}
 
         {/* Section 2: Product Catalog with Filters, Search, Sort, and Pagination */}
         <Suspense fallback={<ProductCatalogSkeleton />}>

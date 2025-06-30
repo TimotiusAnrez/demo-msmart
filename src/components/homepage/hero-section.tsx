@@ -18,7 +18,8 @@ export function HeroSection({ title, tagLine, copy, bannerImage }: HeroSectionPr
           <Image
             src={bannerImage.url}
             alt={bannerImage.alt || 'Hero background'}
-            fill
+            height={500}
+            width={500}
             priority
             className="object-cover"
           />

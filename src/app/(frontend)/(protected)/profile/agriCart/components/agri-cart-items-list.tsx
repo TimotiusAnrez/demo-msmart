@@ -98,6 +98,8 @@ export default function AgriCartItemsList({ items }: AgriCartItemsListProps) {
                 <Image
                   src={DefaultAssets.PRODUCT}
                   alt={item.produce.name}
+                  width={500}
+                  height={500}
                   className="w-full h-full object-cover rounded-lg"
                 />
               ) : (

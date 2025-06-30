@@ -11,6 +11,7 @@ export function NewestProducts({ products }: NewestProductsProps) {
   if (products.length === 0) return null
 
   const featuredProduct = products[0]
+  const featuredProductShop = featuredProduct.owner as Number
   const featuredProductMedia = featuredProduct.information.mediaGallery?.[0]?.media as Media
 
   return (
@@ -34,14 +35,15 @@ export function NewestProducts({ products }: NewestProductsProps) {
         {products.length > 0 && (
           <div className="col-span-1 md:col-span-2 lg:col-span-6 overflow-hidden rounded-lg">
             <Link
-              href={`/shopping/product/${products[0].id}`}
+              href={`/shopping/${featuredProductShop}/${products[0].id}`}
               className="group block relative h-[400px]"
             >
               {featuredProductMedia && 'url' in featuredProductMedia ? (
                 <Image
                   src={featuredProductMedia.url || '/placeholder.jpg'}
                   alt={featuredProduct.information.name}
-                  fill
+                  width={500}
+                  height={500}
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               ) : (
@@ -70,7 +72,7 @@ export function NewestProducts({ products }: NewestProductsProps) {
             return (
               <Link
                 key={product.id}
-                href={`/shopping/product/${product.id}`}
+                href={`/shopping/${product.owner as Number}/${product.id}`}
                 className="group block relative h-[200px] overflow-hidden rounded-lg"
               >
                 {product.information.mediaGallery &&
@@ -79,7 +81,8 @@ export function NewestProducts({ products }: NewestProductsProps) {
                   <Image
                     src={media.url || '/placeholder.jpg'}
                     alt={product.information.name}
-                    fill
+                    width={500}
+                    height={500}
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 ) : (

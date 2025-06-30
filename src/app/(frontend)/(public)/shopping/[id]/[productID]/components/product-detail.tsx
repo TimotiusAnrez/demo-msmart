@@ -104,7 +104,8 @@ export default function ProductDetail({ product, variants, isAuthenticated }: Pr
             <Image
               src={mediaGallery[currentImageIndex].url}
               alt={product.information.name}
-              fill
+              width={500}
+              height={500}
               className="object-cover"
             />
           ) : (
@@ -153,7 +154,8 @@ export default function ProductDetail({ product, variants, isAuthenticated }: Pr
                   <Image
                     src={media.url}
                     alt={`Thumbnail ${index + 1}`}
-                    fill
+                    width={500}
+                    height={500}
                     className="object-cover"
                   />
                 ) : (

@@ -121,7 +121,8 @@ export default function CartItemsList({ shopId, shopName, items, subtotal }: Car
                     <Image
                       src={mediaUrl}
                       alt={product.information.name}
-                      fill
+                      width={500}
+                      height={500}
                       className="object-cover"
                     />
                   ) : (
