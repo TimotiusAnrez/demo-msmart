@@ -6,6 +6,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { postgresAdapter } from '@payloadcms/db-postgres'
 
 import {
   Discussion,
@@ -85,9 +86,16 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: sqliteAdapter({
-    client: {
-      url: process.env.DATABASE_URI || '',
+  // db: sqliteAdapter({
+  //   client: {
+  //     url: process.env.DATABASE_URI || '',
+  //   },
+  // }),
+  db: postgresAdapter({
+    // Postgres-specific arguments go here.
+    // `pool` is required.
+    pool: {
+      connectionString: process.env.DATABASE_URI,
     },
   }),
   sharp,
