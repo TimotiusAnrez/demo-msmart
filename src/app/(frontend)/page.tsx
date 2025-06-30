@@ -22,34 +22,32 @@ export default async function HomePage() {
   const payload = await getPayloadClient()
 
   // Fetch landing page data from the global
-  const landingPageData = await payload.findGlobal({
-    slug: 'landingPage',
-    depth: 2,
-  })
+  // const landingPageData = await payload.findGlobal({
+  //   slug: 'landingPage',
+  //   depth: 2,
+  // })
 
   // Get hero section data with defaults for missing fields
   const heroData = {
-    title: landingPageData.heroSection?.title || 'Things to Do in Labuan Bajo',
-    tagLine: landingPageData.heroSection?.tagLine || 'Discover the gateway to Komodo National Park',
-    copy:
-      landingPageData.heroSection?.copy ||
-      'Check out must-see sights and activities: Padar Island, Rangko Cave, Multi-day Tours, Islands. For personalized recommendations, try our AI trip-planning product.',
-    bannerImage: (landingPageData.heroSection?.bannerImage as Media) || null,
+    title: 'Things to Do in Labuan Bajo',
+    tagLine: 'Discover the gateway to Komodo National Park',
+    copy: 'Check out must-see sights and activities: Padar Island, Rangko Cave, Multi-day Tours, Islands. For personalized recommendations, try our AI trip-planning product.',
+    bannerImage: null,
   }
 
   // Keeping the existing code for shop categories for future use
-  const categoryList = await payload.find({
-    collection: 'shopCategories',
-    depth: 2,
-    pagination: false,
-    limit: 10,
-  })
+  // const categoryList = await payload.find({
+  //   collection: 'shopCategories',
+  //   depth: 2,
+  //   pagination: false,
+  //   limit: 10,
+  // })
 
-  const businessList = categoryList.docs.map((category) => {
-    return category.shopList?.docs?.map((shop) => {
-      return shop as Shop
-    })
-  })
+  // const businessList = categoryList.docs.map((category) => {
+  //   return category.shopList?.docs?.map((shop) => {
+  //     return shop as Shop
+  //   })
+  // })
 
   return (
     <div className="landing-page">
@@ -59,18 +57,8 @@ export default async function HomePage() {
       <section className="relative min-h-screen flex items-center">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          {heroData.bannerImage?.url ? (
-            <Image
-              src={heroData.bannerImage.url}
-              alt={heroData.bannerImage.alt || 'Labuan Bajo scenic view'}
-              width={500}
-              height={500}
-              priority
-              className="object-cover"
-            />
-          ) : (
-            <div className="w-full h-full bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400" />
-          )}
+          <div className="w-full h-full bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-400" />
+
           <div className="absolute inset-0 bg-black/30" />
         </div>
 
