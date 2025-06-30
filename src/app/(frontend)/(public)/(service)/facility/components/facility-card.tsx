@@ -5,6 +5,7 @@ import { Building2, MapPin, Phone, Mail, Globe, MessageSquare } from 'lucide-rea
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { DefaultAssets } from '@/types/globals.enum'
 
 interface FacilityCardProps {
   facility: Facility
@@ -14,7 +15,7 @@ export function FacilityCard({ facility }: FacilityCardProps) {
   const { id, name, logo, type, sector, description, location, contactList } = facility
 
   // Extract logo image if available
-  const logoImage = logo ? (logo as Media) : null
+  const logoImage = logo as Media
 
   // Find the primary contact methods
   const email = contactList?.find((contact) => contact.type === 'EMAIL')?.value
@@ -34,7 +35,7 @@ export function FacilityCard({ facility }: FacilityCardProps) {
       <div className="h-48 bg-muted/30 relative flex items-center justify-center p-6">
         {logoImage && logoImage.url ? (
           <Image
-            src={logoImage.url}
+            src={logoImage.url || DefaultAssets.PRODUCT}
             alt={name}
             width={200}
             height={150}

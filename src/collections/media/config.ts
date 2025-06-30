@@ -30,6 +30,7 @@ export const Media: CollectionConfig = {
     ],
     adminThumbnail: 'thumbnail',
     mimeTypes: ['image/*'],
+    disableLocalStorage: true,
   },
   fields: [
     {

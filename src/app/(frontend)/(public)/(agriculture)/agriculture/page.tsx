@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { FarmerProduce, ProduceCategory } from '@/payload-types'
+import { Farmer, FarmerProduce, ProduceCategory } from '@/payload-types'
 import { auth } from '@clerk/nextjs/server'
 import { Suspense } from 'react'
 
@@ -13,7 +13,7 @@ import { getPayloadClient } from '@/lib/payload/payload-client'
 import AuthCTA from './components/auth-cta'
 import { ProduceCatalog } from './components/produce-catalog'
 import ProduceCatalogSkeleton from './components/produce-catalog-skeleton'
-import { NewestProduce } from './components/newest-produce'
+import MapDrawer from '@/components/map/mapSheet'
 
 export const metadata: Metadata = {
   title: 'Agriculture | Labuan Bajo SMART',
@@ -41,6 +41,11 @@ export default async function AgriculturePage({
   // Fetch all produce categories for filter
   const categories = await payload.find({
     collection: 'produceCategory',
+    limit: 100,
+  })
+
+  const farmers = await payload.find({
+    collection: 'farmers',
     limit: 100,
   })
 
@@ -74,6 +79,12 @@ export default async function AgriculturePage({
     depth: 2,
   })
 
+  const positionList = farmers.docs.map((farmer: Farmer) => {
+    return {
+      lat: farmer.location.geo[0],
+      lng: farmer.location.geo[1],
+    }
+  })
   // Check if user is authenticated
   const { userId } = await auth()
 
@@ -81,6 +92,14 @@ export default async function AgriculturePage({
     <>
       <Header />
       <div className="container mx-auto px-4 py-8">
+        <div className="mb-6 w-full flex justify-between items-center">
+          <h2 className="text-2xl font-bold">Browse Farm Produce</h2>
+          <MapDrawer
+            position={positionList}
+            defaultCenter={{ lat: -8.717027711456385, lng: 120.14788876527878 }}
+          />
+        </div>
+
         {/* Section 1: Newest Produce with CTA */}
         {/* <NewestProduce produce={newestProduceData.docs as FarmerProduce[]} /> */}
 

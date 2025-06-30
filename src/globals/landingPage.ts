@@ -32,18 +32,5 @@ const HeroSection: Field = {
 
 export const LandingPage: GlobalConfig = {
   slug: 'landingPage',
-  admin: {
-    hidden: (req) => {
-      const allowedRole: (
-        | 'ADMIN_MS'
-        | 'SUPER_ADMIN'
-        | 'USER'
-        | 'USER_BUSINESS'
-        | 'ADMIN_MSAGRI'
-      )[] = ['ADMIN_MS', 'SUPER_ADMIN']
-
-      return !checkRolePublic(allowedRole, req.user?.role)
-    },
-  },
   fields: [HeroSection],
 }

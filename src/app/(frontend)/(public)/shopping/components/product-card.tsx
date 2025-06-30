@@ -7,6 +7,7 @@ import { Media, ShopProduct } from '@/payload-types'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { formatPrice } from '@/lib/utils'
+import { DefaultAssets } from '@/types/globals.enum'
 
 interface ProductCardProps {
   product: ShopProduct
@@ -27,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
   // Get the shop name to display
   const shopName = typeof product.owner !== 'number' ? product.owner.shopName : ''
 
-  const media = product.information.mediaGallery?.[0]?.media as Media
+  const media = (product.information.mediaGallery?.[0]?.media as Media) || DefaultAssets.PRODUCT
   const owner = typeof product.owner === 'number' ? product.owner : product.owner.id
 
   return (

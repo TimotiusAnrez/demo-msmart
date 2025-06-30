@@ -28,8 +28,8 @@ export function PublicNavigation() {
     <NavigationMenu>
       <NavigationMenuList className="space-x-2">
         {/* Tourism Dropdown */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Tourism</NavigationMenuTrigger>
+        {/* <NavigationMenuItem> */}
+        {/* <NavigationMenuTrigger>Tourism</NavigationMenuTrigger>
           <NavigationMenuContent>
             <div className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
               <ul className="grid gap-2">
@@ -88,7 +88,7 @@ export function PublicNavigation() {
               </div>
             </div>
           </NavigationMenuContent>
-        </NavigationMenuItem>
+        </NavigationMenuItem> */}
 
         {/* Shopping - Direct Link */}
         <NavigationMenuItem>

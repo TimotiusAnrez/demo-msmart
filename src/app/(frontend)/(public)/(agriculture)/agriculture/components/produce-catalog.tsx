@@ -21,19 +21,11 @@ export function ProduceCatalog({
   categories,
   totalPages,
   currentPage,
-  totalProduce,
   searchQuery,
   selectedCategory,
 }: ProduceCatalogProps) {
   return (
     <section className="mt-8">
-      <div className="mb-6">
-        <h2 className="text-2xl font-bold">Browse Farm Produce</h2>
-        <p className="text-muted-foreground mt-1">
-          {totalProduce} {totalProduce === 1 ? 'item' : 'items'} available
-        </p>
-      </div>
-
       <div className="flex flex-col md:flex-row gap-4 mb-8">
         <ProduceSearch searchQuery={searchQuery} />
         <ProduceFilter categories={categories} selectedCategory={selectedCategory} />

@@ -8,16 +8,16 @@ import SimilarProduce from './components/similar-produce'
 import { auth } from '@clerk/nextjs/server'
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string // Farmer ID
     produceID: string // Produce ID
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const payload = await getPayloadClient()
 
-  const { produceID } = params
+  const { produceID } = await params
 
   try {
     const produce = (await payload.findByID({
@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProduceDetailPage({ params }: Props) {
-  const { id, produceID } = params
+  const { id, produceID } = await params
   const { userId } = await auth()
   const isAuthenticated = Boolean(userId)
 

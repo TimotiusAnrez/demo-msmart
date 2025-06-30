@@ -46,5 +46,5 @@ export enum PublicRole {
 }
 
 export enum DefaultAssets {
-  PRODUCT = 'https://www.flaticon.com/free-icons/box',
+  PRODUCT = '/default-image.png',
 }

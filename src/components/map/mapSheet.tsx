@@ -13,9 +13,10 @@ import { MapWithAdvanceMarker } from './map'
 interface MapDrawerProps {
   title?: string
   position: { lat: number; lng: number }[]
+  defaultCenter?: { lat: number; lng: number } | null
 }
 
-export default function MapDrawer({ title, position }: MapDrawerProps) {
+export default function MapDrawer({ title, position, defaultCenter }: MapDrawerProps) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -28,7 +29,7 @@ export default function MapDrawer({ title, position }: MapDrawerProps) {
         <DrawerHeader>
           <DrawerTitle>{title || 'Map'}</DrawerTitle>
         </DrawerHeader>
-        <MapWithAdvanceMarker positionList={position} />
+        <MapWithAdvanceMarker positionList={position} defaultCenter={defaultCenter} />
       </DrawerContent>
     </Drawer>
   )
