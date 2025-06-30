@@ -15,7 +15,7 @@ export function NewsGrid({ news }: NewsGridProps) {
       <div className="flex flex-col items-center justify-center py-12">
         <h3 className="text-xl font-medium">No articles found</h3>
         <p className="text-muted-foreground mt-2">
-          Try adjusting your search or filter to find what you're looking for.
+          Try adjusting your search or filter to find what you looking for.
         </p>
       </div>
     )

@@ -1,4 +1,3 @@
-import FormExample from '@/components/form/form-example'
 import UserOnboardingForm from '@/components/frontend/onboarding/userForm'
 import { NavigationLink } from '@/types/globals.enum'
 import { currentUser } from '@clerk/nextjs/server'

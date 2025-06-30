@@ -6,6 +6,7 @@ import { ProfileHeader } from '@/components/profile/profile-header'
 import AgriCartContent from './components/agri-cart-content'
 import AgriCartContentSkeleton from './components/agri-cart-content-skeleton'
 import { AgriCartItem, FarmerProduce } from '@/payload-types'
+import Link from 'next/link'
 
 export default async function AgriCartPage() {
   const { userId } = await auth()
@@ -34,12 +35,12 @@ export default async function AgriCartPage() {
           <p className="text-muted-foreground mb-4">
             Browse our fresh produce and add items to your cart.
           </p>
-          <a
+          <Link
             href="/agriculture"
             className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
           >
             Browse Agricultural Products
-          </a>
+          </Link>
         </div>
       </div>
     )
@@ -64,7 +65,7 @@ export default async function AgriCartPage() {
     cartItems = agriCart.agriCartItemList?.docs?.map(async (item) => {
       if (typeof item === 'number') {
         // Fetch the full item if it's just an ID
-        let data = await payload.findByID({
+        const data = await payload.findByID({
           collection: 'agriCartItems',
           id: item,
           depth: 4,
@@ -73,7 +74,7 @@ export default async function AgriCartPage() {
       }
 
       // Item is already an object, construct the proper AgriCartItem
-      let data: AgriCartItem = {
+      const data: AgriCartItem = {
         id: item.id,
         quantity: item.quantity,
         produce: item.produce,
@@ -83,14 +84,14 @@ export default async function AgriCartPage() {
       }
 
       // Fetch the full produce details with farmer information
-      let produce = await payload.findByID({
+      const produce = await payload.findByID({
         collection: 'farmerProduce',
         id: data.produce as number,
         depth: 4,
       })
 
       // Update the data with the fetched produce
-      data = {
+      const updatedData: AgriCartItem = {
         id: item.id,
         quantity: item.quantity,
         produce: produce as FarmerProduce,
@@ -99,7 +100,7 @@ export default async function AgriCartPage() {
         createdAt: item.createdAt,
       }
 
-      return data
+      return updatedData
     })
   } catch (error) {
     console.error('Error fetching agri cart items:', error)

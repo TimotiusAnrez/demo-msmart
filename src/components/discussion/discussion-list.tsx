@@ -33,7 +33,7 @@ export function DiscussionList({ discussions, currentPage, totalPages }: Discuss
           <MessageSquare className="h-10 w-10 text-muted-foreground" />
           <h3 className="mt-4 text-lg font-semibold">No discussions found</h3>
           <p className="mb-4 mt-2 text-sm text-muted-foreground">
-            We couldn't find any discussions that match your search criteria. Try adjusting your
+            We could not find any discussions that match your search criteria. Try adjusting your
             filters or start a new discussion.
           </p>
         </div>

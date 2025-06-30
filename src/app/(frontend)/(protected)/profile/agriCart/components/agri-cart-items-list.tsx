@@ -6,6 +6,7 @@ import { updateAgriCartItem, removeAgriCartItem } from '../actions'
 import { Trash2, Minus, Plus } from 'lucide-react'
 import { toast } from 'sonner'
 import { DefaultAssets } from '@/types/globals.enum'
+import Image from 'next/image'
 
 interface AgriCartItemsListProps {
   items: (AgriCartItem & {
@@ -94,7 +95,7 @@ export default function AgriCartItemsList({ items }: AgriCartItemsListProps) {
             {/* Product Image */}
             <div className="flex-shrink-0 w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center">
               {item.produce.mediaGalery && item.produce.mediaGalery.length > 0 ? (
-                <img
+                <Image
                   src={DefaultAssets.PRODUCT}
                   alt={item.produce.name}
                   className="w-full h-full object-cover rounded-lg"

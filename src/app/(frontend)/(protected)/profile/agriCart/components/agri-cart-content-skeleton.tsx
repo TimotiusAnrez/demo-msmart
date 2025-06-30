@@ -1,4 +1,5 @@
 import { ProfileHeader } from '@/components/profile/profile-header'
+import Link from 'next/link'
 
 export default function AgriCartContentSkeleton() {
   return (
@@ -12,12 +13,12 @@ export default function AgriCartContentSkeleton() {
         <p className="text-muted-foreground mb-4">
           Browse our fresh produce and add items to your cart.
         </p>
-        <a
+        <Link
           href="/agriculture"
           className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
         >
           Browse Agricultural Products
-        </a>
+        </Link>
       </div>
     </div>
   )

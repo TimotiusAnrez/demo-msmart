@@ -15,18 +15,26 @@ export const metadata: Metadata = {
 }
 
 interface NewsPageProps {
-  searchParams: {
-    category?: string
-    query?: string
-    page?: string
-  }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function NewsPage({ searchParams }: NewsPageProps) {
   const payload = await getPayloadClient()
 
-  // Extract and parse search parameters
-  const { category, query, page } = await searchParams
+  // Parse search parameters - await the Promise and safely extract values
+  const resolvedSearchParams = await searchParams
+
+  // Safely extract and convert search parameters
+  const category = Array.isArray(resolvedSearchParams.category)
+    ? resolvedSearchParams.category[0]
+    : resolvedSearchParams.category
+  const query = Array.isArray(resolvedSearchParams.query)
+    ? resolvedSearchParams.query[0]
+    : resolvedSearchParams.query
+  const page = Array.isArray(resolvedSearchParams.page)
+    ? resolvedSearchParams.page[0]
+    : resolvedSearchParams.page
+
   const categoryId = category
   const searchQuery = query || ''
   const currentPage = Number(page) || 1
@@ -79,6 +87,13 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
   const headline = newsResponse.docs[0] as News
   const news = newsResponse.docs as News[]
 
+  // Convert searchParams to format expected by NewsPagination
+  const paginationSearchParams = {
+    category: category || undefined,
+    query: query || undefined,
+    page: page || undefined,
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -101,7 +116,7 @@ export default async function NewsPage({ searchParams }: NewsPageProps) {
           <NewsPagination
             currentPage={currentPage}
             totalPages={newsResponse.totalPages}
-            searchParams={searchParams}
+            searchParams={paginationSearchParams}
           />
         )}
       </main>

@@ -23,18 +23,27 @@ export const metadata: Metadata = {
 export default async function AgriculturePage({
   searchParams,
 }: {
-  searchParams: {
-    page?: string
-    search?: string
-    sort?: string
-    category?: string
-  }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const { page: pageParam, search, category } = await searchParams
+  const resolvedSearchParams = await searchParams
+
+  // Safely extract and convert search parameters
+  const pageParam = Array.isArray(resolvedSearchParams.page)
+    ? resolvedSearchParams.page[0]
+    : resolvedSearchParams.page
+  const search = Array.isArray(resolvedSearchParams.search)
+    ? resolvedSearchParams.search[0]
+    : resolvedSearchParams.search
+  const category = Array.isArray(resolvedSearchParams.category)
+    ? resolvedSearchParams.category[0]
+    : resolvedSearchParams.category
+  const sort = Array.isArray(resolvedSearchParams.sort)
+    ? resolvedSearchParams.sort[0]
+    : resolvedSearchParams.sort
 
   // Use the helper functions to safely parse pagination and sort params
-  const { page, limit } = getPaginationParams(pageParam, 1, 12)
-
+  const { page, limit } = getPaginationParams(pageParam)
+  const { field: sortField, order: sortOrder } = getSortParams(sort)
   // Initialize payload client
   const payload = await getPayloadClient()
 

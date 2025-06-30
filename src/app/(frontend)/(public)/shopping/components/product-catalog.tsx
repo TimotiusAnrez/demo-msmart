@@ -32,7 +32,7 @@ export function ProductCatalog({
 }: ProductCatalogProps) {
   return (
     <section id="product-catalog" className="py-8">
-      <h2 className="text-2xl font-bold mb-6">We've Got Everything You Need.</h2>
+      <h2 className="text-2xl font-bold mb-6">We Got Everything You Need.</h2>
 
       {/* Filters and search row */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
@@ -63,7 +63,7 @@ export function ProductCatalog({
         <div className="text-center py-12">
           <h3 className="text-xl font-medium">No products found</h3>
           <p className="text-muted-foreground mt-2">
-            Try adjusting your search or filter to find what you're looking for.
+            Try adjusting your search or filter to find what you are looking for.
           </p>
         </div>
       )}

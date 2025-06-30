@@ -157,7 +157,7 @@ export function ProfileEditForm({ user, onSave, onCancel }: ProfileEditFormProps
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Document Type</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select document type" />

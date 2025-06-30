@@ -3,7 +3,6 @@
 import { getPayloadClient } from '@/lib/payload/payload-client'
 import { revalidatePath } from 'next/cache'
 import { auth } from '@clerk/nextjs/server'
-import { FarmerProduce } from '@/payload-types'
 
 // Types for add to agri cart
 type AddToAgriCartParams = {

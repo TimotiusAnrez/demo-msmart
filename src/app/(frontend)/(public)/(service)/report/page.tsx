@@ -15,16 +15,25 @@ export const metadata: Metadata = {
 }
 
 interface ReportPageProps {
-  searchParams: {
-    query?: string
-    category?: string
-    page?: string
-  }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function ReportPage({ searchParams }: ReportPageProps) {
-  const { query, category, page = '1' } = await searchParams
-  const currentPage = parseInt(page)
+  // Parse search parameters - await the Promise and safely extract values
+  const resolvedSearchParams = await searchParams
+
+  // Safely extract and convert search parameters
+  const query = Array.isArray(resolvedSearchParams.query)
+    ? resolvedSearchParams.query[0]
+    : resolvedSearchParams.query
+  const category = Array.isArray(resolvedSearchParams.category)
+    ? resolvedSearchParams.category[0]
+    : resolvedSearchParams.category
+  const page = Array.isArray(resolvedSearchParams.page)
+    ? resolvedSearchParams.page[0]
+    : resolvedSearchParams.page
+
+  const currentPage = parseInt(page || '1')
   const payload = await getPayloadClient()
 
   // Fetch report categories

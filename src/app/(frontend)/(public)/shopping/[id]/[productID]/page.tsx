@@ -8,10 +8,10 @@ import RelatedProducts from './components/related-products'
 import { auth } from '@clerk/nextjs/server'
 
 type Props = {
-  params: {
+  params: Promise<{
     id: string // Shop ID
     productID: string // Product ID
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

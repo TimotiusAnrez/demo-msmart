@@ -34,7 +34,7 @@ export function NewestProduce({ produce }: NewestProduceProps) {
         {produce.map((item) => {
           let imageUrl: string = DefaultAssets.PRODUCT
           if (item.mediaGalery?.[0]?.image) {
-            let image = item.mediaGalery[0].image as Media
+            const image = item.mediaGalery[0].image as Media
 
             imageUrl = image.sizes?.card?.url || DefaultAssets.PRODUCT
           }

@@ -267,37 +267,37 @@ export default async function FacilityDetailPage({ params }: FacilityDetailPageP
                         </p>
                         <div className="text-sm text-gray-600">
                           {contact.type === 'WEBSITE' ? (
-                            <a
+                            <Link
                               href={formatContactValue(contact.type, contact.value)}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-blue-600 hover:text-blue-800 underline"
                             >
                               {contact.value}
-                            </a>
+                            </Link>
                           ) : contact.type === 'EMAIL' ? (
-                            <a
+                            <Link
                               href={`mailto:${contact.value}`}
                               className="text-blue-600 hover:text-blue-800"
                             >
                               {contact.value}
-                            </a>
+                            </Link>
                           ) : contact.type === 'WHATSAPP' ? (
-                            <a
+                            <Link
                               href={`https://wa.me/${formatContactValue(contact.type, contact.value).replace(/[^0-9]/g, '')}`}
                               target="_blank"
                               rel="noopener noreferrer"
                               className="text-green-600 hover:text-green-800"
                             >
                               {formatContactValue(contact.type, contact.value)}
-                            </a>
+                            </Link>
                           ) : (
-                            <a
+                            <Link
                               href={`tel:${formatContactValue(contact.type, contact.value)}`}
                               className="text-blue-600 hover:text-blue-800"
                             >
                               {formatContactValue(contact.type, contact.value)}
-                            </a>
+                            </Link>
                           )}
                         </div>
                       </div>

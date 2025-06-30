@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 
 const spinTransition = {
   repeat: Infinity,
-  ease: 'easeInOut',
+  ease: 'linear' as const,
   duration: 1,
 }
 

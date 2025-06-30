@@ -13,18 +13,25 @@ export const metadata: Metadata = {
 }
 
 interface FacilityPageProps {
-  searchParams: {
-    page?: string
-    sector?: string
-    search?: string
-  }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 const ITEMS_PER_PAGE = 9
 
 export default async function FacilityPage({ searchParams }: FacilityPageProps) {
-  // Parse search parameters
-  const { page, sector, search } = await searchParams
+  // Parse search parameters - await the Promise and safely extract values
+  const resolvedSearchParams = await searchParams
+
+  // Safely extract and convert search parameters
+  const page = Array.isArray(resolvedSearchParams.page)
+    ? resolvedSearchParams.page[0]
+    : resolvedSearchParams.page
+  const sector = Array.isArray(resolvedSearchParams.sector)
+    ? resolvedSearchParams.sector[0]
+    : resolvedSearchParams.sector
+  const search = Array.isArray(resolvedSearchParams.search)
+    ? resolvedSearchParams.search[0]
+    : resolvedSearchParams.search
 
   // Get PayloadCMS client
   const payload = await getPayloadClient()
@@ -65,6 +72,13 @@ export default async function FacilityPage({ searchParams }: FacilityPageProps) 
   // Get all sectors for filter options
   const sectors = ['HEALTH', 'EDUCATION', 'GOVERNMENT', 'PUBLIC_SERVICE', 'INFRASTRUCTURE']
 
+  // Convert searchParams to format expected by FacilityPagination
+  const paginationSearchParams = {
+    page: page || undefined,
+    sector: sector || undefined,
+    search: search || undefined,
+  }
+
   return (
     <div className="w-screen h-screen">
       <Header />
@@ -92,7 +106,7 @@ export default async function FacilityPage({ searchParams }: FacilityPageProps) 
             <FacilityPagination
               currentPage={page ? Number(page) : 1}
               totalPages={totalPages}
-              searchParams={searchParams}
+              searchParams={paginationSearchParams}
             />
           </div>
         )}

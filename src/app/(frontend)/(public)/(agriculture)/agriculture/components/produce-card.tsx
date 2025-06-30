@@ -15,7 +15,7 @@ export function ProduceCard({ produce }: ProduceCardProps) {
   let imageUrl: string = DefaultAssets.PRODUCT
 
   if (produce.mediaGalery?.[0]?.image) {
-    let image = produce.mediaGalery[0].image as Media
+    const image = produce.mediaGalery[0].image as Media
 
     imageUrl = image.sizes?.card?.url || DefaultAssets.PRODUCT
   }

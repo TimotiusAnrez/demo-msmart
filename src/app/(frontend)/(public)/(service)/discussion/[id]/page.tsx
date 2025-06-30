@@ -15,9 +15,9 @@ import { CommentForm } from '@/components/discussion/comment-form'
 import { Separator } from '@/components/ui/separator'
 
 interface DiscussionDetailPageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 // Generate metadata for the page

@@ -11,8 +11,6 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { ErrorMessage } from '@/types/errorType'
 import { clerkClient } from '@clerk/nextjs/server'
-import { redirect } from 'next/navigation'
-import { NavigationLink } from '@/types/globals.enum'
 
 export async function submitOnboardingForm(data: UserOnboardingFormData): Promise<ActionResult> {
   // Validate form fields
@@ -70,7 +68,7 @@ export async function submitOnboardingForm(data: UserOnboardingFormData): Promis
       verification: {
         documentNumber: data.documentNumber ? data.documentNumber : '',
         documentType: data.documentType ? data.documentType : 'IDCARD',
-        status: 'UNVERIFIED' as 'UNVERIFIED',
+        status: 'UNVERIFIED' as 'UNVERIFIED' | 'VERIFICATION_REQUEST' | 'DECLINED' | 'VERIFIED',
       },
     }
 

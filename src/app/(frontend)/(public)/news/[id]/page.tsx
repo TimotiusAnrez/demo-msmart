@@ -13,9 +13,7 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { DefaultAssets } from '@/types/globals.enum'
 
 interface NewsDetailPageProps {
-  params: {
-    id: string
-  }
+  params: Promise<{ id: string }>
 }
 
 // Generate metadata for the page
@@ -31,7 +29,7 @@ export async function generateMetadata({ params }: NewsDetailPageProps) {
       depth: 3,
     })
 
-    let banner = article.meta.banner as Media
+    const banner = article.meta.banner as Media
 
     return {
       title: `${article.meta.title} | Labuan Bajo News`,

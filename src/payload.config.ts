@@ -47,10 +47,6 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
-    routes: {
-      login: '/auth/sign-in',
-      browseByFolder: '/admin',
-    },
     components: {
       providers: ['@/components/payload/providers/clerkPayloadProvider'],
     },

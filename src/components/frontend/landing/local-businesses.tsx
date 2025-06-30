@@ -19,7 +19,7 @@ export function LocalBusinesses({ businesses }: LocalBusinessesProps) {
             Local Business Directory
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Support local entrepreneurs and discover unique products that showcase our region's
+            Support local entrepreneurs and discover unique products that showcase our regions
             character
           </p>
         </div>

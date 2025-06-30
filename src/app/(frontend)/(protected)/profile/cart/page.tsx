@@ -50,7 +50,7 @@ export default async function CartPage() {
 
     cartItems = cart.cartItemList?.docs?.map(async (item) => {
       if (typeof item === 'number') {
-        let data = await payload.findByID({
+        const data = await payload.findByID({
           collection: 'cartItems',
           id: item,
           depth: 4,
@@ -58,7 +58,7 @@ export default async function CartPage() {
         return data
       }
 
-      let data: CartItem = {
+      const data: CartItem = {
         id: item.id,
         quantity: item.quantity,
         variant: item.variant,
@@ -68,19 +68,19 @@ export default async function CartPage() {
         createdAt: item.createdAt,
       }
 
-      let product = await payload.findByID({
+      const product = await payload.findByID({
         collection: 'shopProducts',
         id: data.product as number,
         depth: 4,
       })
 
-      let variant = await payload.findByID({
+      const variant = await payload.findByID({
         collection: 'productVariant',
         id: data.variant as number,
         depth: 4,
       })
 
-      data = {
+      const updatedData: CartItem = {
         id: item.id,
         quantity: item.quantity,
         variant: variant as ProductVariant,
@@ -90,7 +90,7 @@ export default async function CartPage() {
         createdAt: item.createdAt,
       }
 
-      return data
+      return updatedData
     })
   } catch (error) {
     console.error('Error fetching cart items:', error)

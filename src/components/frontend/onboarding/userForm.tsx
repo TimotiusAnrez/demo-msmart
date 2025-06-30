@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { TextField, SelectField, RadioGroupField } from '@/components/form/form-fields'
+import { TextField, SelectField } from '@/components/form/form-fields'
 import { toast } from 'sonner'
 import { UserOnboardingFormData, userOnboardingSchema } from '@/lib/schemas/user-schema'
 import { submitOnboardingForm } from '@/app/actions/onboarding'
@@ -12,7 +12,6 @@ import { DateField } from '@/components/form/date-input-field'
 import { redirect, useRouter } from 'next/navigation'
 import { NavigationLink } from '@/types/globals.enum'
 import { useFormStatus } from 'react-dom'
-import Loading from '@/app/(frontend)/loading'
 import TropicalLoading from '@/components/global/loading/tropical-loading'
 
 type FormValues = z.infer<typeof userOnboardingSchema>

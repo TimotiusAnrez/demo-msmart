@@ -2,12 +2,13 @@
 
 import * as React from 'react'
 import { useDropzone } from 'react-dropzone'
-import { X, Upload, ImageIcon, AlertCircle } from 'lucide-react'
+import { X, Upload, AlertCircle } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
+import Image from 'next/image'
 
 export interface FileWithPreview extends File {
   preview: string
@@ -184,7 +185,7 @@ export function ImageUpload({
                   >
                     <div className="image-preview w-full flex justify-center">
                       <div className="aspect-square w-1/2 relative">
-                        <img
+                        <Image
                           src={file.preview || '/placeholder.svg'}
                           alt={file.name}
                           className="object-cover w-full h-full"

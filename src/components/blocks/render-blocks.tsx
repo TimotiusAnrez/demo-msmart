@@ -1,12 +1,7 @@
 import { NewsParagraphComponent } from '@/components/blocks/news-paragraph-block'
 import { ParagraphWithImageComponent } from '@/components/blocks/paragraph-with-image-block'
-import { News } from '@/payload-types'
+import { News, NewsParagraphBlock, ParagraphWithImageBlock } from '@/payload-types'
 import { Fragment } from 'react'
-
-const blockComponents = {
-  newsParagraphBlock: NewsParagraphComponent,
-  paragraphWithImageBlock: ParagraphWithImageComponent,
-}
 
 export const RenderBlocks: React.FC<{
   blocks: News['newsContentSection']
@@ -21,18 +16,23 @@ export const RenderBlocks: React.FC<{
         {blocks.map((block, index) => {
           const { blockType } = block
 
-          if (blockType && blockType in blockComponents) {
-            const Block = blockComponents[blockType as keyof typeof blockComponents]
-
-            if (Block) {
-              return (
-                <div key={block.blockType}>
-                  <Block block={block} />
-                </div>
-              )
-            }
-            return null
+          if (blockType === 'newsParagraphBlock') {
+            return (
+              <div key={`${blockType}-${index}`}>
+                <NewsParagraphComponent block={block as NewsParagraphBlock} />
+              </div>
+            )
           }
+
+          if (blockType === 'paragraphWithImageBlock') {
+            return (
+              <div key={`${blockType}-${index}`}>
+                <ParagraphWithImageComponent block={block as ParagraphWithImageBlock} />
+              </div>
+            )
+          }
+
+          return null
         })}
       </Fragment>
     )

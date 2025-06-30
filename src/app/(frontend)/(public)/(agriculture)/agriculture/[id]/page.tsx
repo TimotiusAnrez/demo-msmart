@@ -8,9 +8,7 @@ import RelatedProduce from './components/related-produce'
 import { auth } from '@clerk/nextjs/server'
 
 type Props = {
-  params: {
-    id: string // Farmer ID
-  }
+  params: Promise<{ id: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -38,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function FarmerPage({ params }: Props) {
-  const { id } = params
+  const { id } = await params
   const { userId } = await auth()
   const isAuthenticated = Boolean(userId)
 

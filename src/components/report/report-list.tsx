@@ -34,8 +34,8 @@ export function ReportList({ reports, currentPage, totalPages }: ReportListProps
           <AlertCircle className="h-10 w-10 text-muted-foreground" />
           <h3 className="mt-4 text-lg font-semibold">No reports found</h3>
           <p className="mb-4 mt-2 text-sm text-muted-foreground">
-            We couldn't find any reports that match your search criteria. Try adjusting your filters
-            or submit a new report.
+            We could not find any reports that match your search criteria. Try adjusting your
+            filters or submit a new report.
           </p>
         </div>
       </div>

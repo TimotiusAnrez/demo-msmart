@@ -4,12 +4,9 @@ import { ArrowRight, MapPin, Camera, Waves, Mountain } from 'lucide-react'
 
 import { Media, Shop } from '@/payload-types'
 import { Header } from '@/components/global/header/header'
-import { HeroSection } from '@/components/homepage/hero-section'
-import { SearchFilter } from '@/components/homepage/search-filter'
 import { getPayloadClient } from '@/lib/payload/payload-client'
 import { AnimatedIcon } from '@/components/global/loading/tropical-loading'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
 
 export function Maintenance({ message }: { message: string }) {

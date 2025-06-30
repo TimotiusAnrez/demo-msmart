@@ -2,7 +2,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Media, ShopProduct } from '@/payload-types'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 
 interface NewestProductsProps {
   products: ShopProduct[]

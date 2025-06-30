@@ -1,9 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FarmerProduce, AgriCartItem, Farmer } from '@/payload-types'
+import { FarmerProduce, AgriCartItem, Farmer, CartItem } from '@/payload-types'
 import AgriCartItemsList from './agri-cart-items-list'
 import AgriCartSummary from './agri-cart-summary'
+import Link from 'next/link'
 
 interface AgriCartContentProps {
   cartItems: any[] // The raw agri cart items from the backend
@@ -36,7 +37,7 @@ export default function AgriCartContent({ cartItems }: AgriCartContentProps) {
         let total = 0
 
         if (cartItems && cartItems.length > 0) {
-          cartItems.forEach((item: any) => {
+          cartItems.forEach((item: AgriCartItem) => {
             // Skip if produce is not available
             if (!item.produce) return
 
@@ -101,12 +102,12 @@ export default function AgriCartContent({ cartItems }: AgriCartContentProps) {
         <p className="text-muted-foreground mb-4">
           Browse our fresh produce and add items to your cart.
         </p>
-        <a
+        <Link
           href="/agriculture"
           className="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
         >
           Browse Agricultural Products
-        </a>
+        </Link>
       </div>
     )
   }
