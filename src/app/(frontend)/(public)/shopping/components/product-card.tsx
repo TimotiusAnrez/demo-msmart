@@ -39,8 +39,8 @@ export function ProductCard({ product }: ProductCardProps) {
             <Image
               src={media.url || '/placeholder.jpg'}
               alt={product.information.name}
-              width={500}
-              height={500}
+              width={1280}
+              height={720}
               className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (

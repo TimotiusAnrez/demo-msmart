@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react'
 import { useFormContext, Controller, FieldValues, Path, FieldError } from 'react-hook-form'
 import FormFieldWrapper from './form-field-wrapper'
+import { Input } from '../ui/input'
 
 interface TextFieldProps<T extends FieldValues> {
   name: Path<T>
@@ -9,7 +10,7 @@ interface TextFieldProps<T extends FieldValues> {
   placeholder?: string
   required?: boolean
   disabled?: boolean
-  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'url'
+  type?: 'text' | 'email' | 'password' | 'number' | 'tel' | 'date'
   defaultValue?: string
   className?: string
   wrapperClassName?: string
@@ -48,7 +49,7 @@ export const TextField = <T extends FieldValues>({
           disabled={disabled}
           className={wrapperClassName}
         >
-          <input
+          <Input
             id={name}
             type={type}
             placeholder={placeholder}

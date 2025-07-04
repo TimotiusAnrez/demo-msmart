@@ -19,11 +19,14 @@ export default async function ProfilePage() {
         equals: user.id,
       },
     },
+    depth: 2,
   })
 
-  if (!userPayload) return <RedirectToSignUp />
+  if (!userPayload || userPayload.docs.length === 0) return <RedirectToSignUp />
 
   const userData = userPayload.docs[0]
+
+  console.log(userData)
 
   return (
     <div className="flex flex-col h-full">

@@ -67,7 +67,9 @@ export function ProfilePageClient({ initialUser }: ProfilePageClientProps) {
     <>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-2xl font-bold">{user.fullName}</h2>
+          <h2 className="text-2xl font-bold">
+            {user.information.firstName + ' ' + user.information.lastName}
+          </h2>
           <p className="text-muted-foreground">Manage your profile information</p>
         </div>
         <div className="flex gap-2">

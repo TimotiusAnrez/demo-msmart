@@ -40,8 +40,8 @@ export async function addToCart({
       }
     }
 
-    const payloadUserID = user.privateMetadata.payloadID
-    const cartID = user.privateMetadata.cartID
+    const payloadUserID = user.privateMetadata.payloadID as number
+    const cartID = user.privateMetadata.cartID as number
 
     if (!payloadUserID || !cartID) {
       return {
@@ -63,12 +63,6 @@ export async function addToCart({
         error: 'Variant not found',
       }
     }
-
-    const userPayload = await payload.findByID({
-      collection: 'users',
-      id: Number(payloadUserID),
-      depth: 2,
-    })
 
     const product = (await payload.findByID({
       collection: 'shopProducts',
@@ -103,7 +97,7 @@ export async function addToCart({
     const cartItem = await payload.create({
       collection: 'cartItems',
       data: {
-        cart: userPayload,
+        cart: cartID,
         product: product,
         variant: variant,
         quantity,

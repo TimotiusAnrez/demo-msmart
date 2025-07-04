@@ -179,7 +179,11 @@ export function ProfileEditForm({ user, onSave, onCancel }: ProfileEditFormProps
                   <FormItem>
                     <FormLabel>Document Number</FormLabel>
                     <FormControl>
-                      <Input {...field} />
+                      <Input
+                        value={field.value || ''}
+                        onChange={field.onChange}
+                        onBlur={field.onBlur}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -214,7 +218,12 @@ export function ProfileEditForm({ user, onSave, onCancel }: ProfileEditFormProps
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input type="tel" {...field} />
+                    <Input
+                      type="tel"
+                      value={field.value || ''}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

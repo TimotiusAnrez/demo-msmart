@@ -188,6 +188,8 @@ export function ImageUpload({
                         <Image
                           src={file.preview || '/placeholder.svg'}
                           alt={file.name}
+                          width={720}
+                          height={480}
                           className="object-cover w-full h-full"
                           onLoad={() => {
                             // Revoke the data uri after the image is loaded to save memory

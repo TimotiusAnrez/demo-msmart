@@ -19,7 +19,7 @@ import {
 export function UserNavigation() {
   const user = useUser()
 
-  if (!user) {
+  if (!user.user?.id) {
     return (
       <div className="flex items-center gap-2">
         <SignInButton mode="modal">

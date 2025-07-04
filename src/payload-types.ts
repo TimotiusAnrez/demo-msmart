@@ -681,7 +681,7 @@ export interface Cart {
  */
 export interface CartItem {
   id: number;
-  cart: number | User;
+  cart: number | Cart;
   product: number | ShopProduct;
   variant?: (number | null) | ProductVariant;
   quantity: number;
